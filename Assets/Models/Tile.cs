@@ -1,10 +1,19 @@
 public class Tile {
-    enum TileType {
+    public enum TileType {
         Empty,
         Floor
     }
 
-    TileType type = TileType.Empty;
+    public TileType type = TileType.Empty;
+
+    public TileType Type {
+        get {
+            return type;
+        }
+        set {
+            type = value;
+        }
+    }
 
     LooseObject LooseObject;
     InstalledObject InstalledObject;
