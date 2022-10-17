@@ -18,7 +18,5 @@ public class Tile {
         this.world = world;
         this.x = x;
         this.y = y;
-
-        //rgfdgsdvdsfhtts
     }
 }
