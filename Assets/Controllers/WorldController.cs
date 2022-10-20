@@ -27,9 +27,17 @@ public class WorldController : MonoBehaviour {
         world.RandomizeTiles();
     }
 
-    void Update() {
+    float randomizeTileTimer = 2f;
 
-    }
+    //void Update() {
+    //    randomizeTileTimer -= Time.deltaTime;
+    //
+    //    if (randomizeTileTimer < 0) {
+    //        world.RandomizeTiles();
+    //        randomizeTileTimer = 2f;
+    //
+    //    }
+    //}
 
     void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
 
@@ -43,3 +51,4 @@ public class WorldController : MonoBehaviour {
 
     }
 }
+

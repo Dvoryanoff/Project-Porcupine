@@ -34,9 +34,9 @@ public class World {
             for (int y = 0; y < Height; y++) {
 
                 if (Random.Range(0, 2) == 0) {
-                    tiles[x, y].Type = Tile.TileType.Floor;
-                } else {
                     tiles[x, y].Type = Tile.TileType.Empty;
+                } else {
+                    tiles[x, y].Type = Tile.TileType.Floor;
                 }
 
             }
