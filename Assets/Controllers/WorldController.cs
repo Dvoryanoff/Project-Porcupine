@@ -1,28 +1,45 @@
 using UnityEngine;
 
 public class WorldController : MonoBehaviour {
+
     public Sprite floorSprite;
 
     World world;
-
     void Start() {
+
         world = new World();
-        world.RandomizeTiles();
 
-        for (int x = 0; x < world.width; x++) {
-            for (int y = 0; y < world.height; y++) {
-                GameObject tileGameObject = new GameObject();
-                tileGameObject.name = $"Tile_{x}_{y}";
+        for (int x = 0; x < world.Width; x++) {
+            for (int y = 0; y < world.Height; y++) {
 
-                //SpriteRenderer tileSpriteRenderer = tileGameObject.AddComponent<SpriteRenderer>();
+                Tile tile_data = world.GetTileAt(x, y);
 
-                //Tile tileData = world.GetTileAt(x, y);
+                GameObject tile_go = new GameObject();
+                tile_go.name = "Tile_" + x + "_" + y;
+                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
 
-                //if (tileData.Type == Tile.TileType.Floor) {
-                //    tileSpriteRenderer.sprite = floorSprite;
-                //}
+                tile_go.AddComponent<SpriteRenderer>();
 
+                tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
             }
         }
+
+        world.RandomizeTiles();
+    }
+
+    void Update() {
+
+    }
+
+    void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
+
+        if (tile_data.Type == Tile.TileType.Floor) {
+            tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
+        } else if (tile_data.Type == Tile.TileType.Empty) {
+            tile_go.GetComponent<SpriteRenderer>().sprite = null;
+        } else {
+            Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
+        }
+
     }
 }
