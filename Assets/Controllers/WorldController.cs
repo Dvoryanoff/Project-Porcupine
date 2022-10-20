@@ -2,17 +2,28 @@ using UnityEngine;
 
 public class WorldController : MonoBehaviour {
 
+    public static WorldController Instance {
+        get; protected set;
+    }
+
     public Sprite floorSprite;
 
-    World world;
+    public World World {
+        get; protected set;
+    }
     void Start() {
 
-        world = new World();
+        if (Instance != null) {
+            Debug.Log($"There should never be two worlds!!!");
+        }
+        Instance = this;
 
-        for (int x = 0; x < world.Width; x++) {
-            for (int y = 0; y < world.Height; y++) {
+        World = new World();
 
-                Tile tile_data = world.GetTileAt(x, y);
+        for (int x = 0; x < World.Width; x++) {
+            for (int y = 0; y < World.Height; y++) {
+
+                Tile tile_data = World.GetTileAt(x, y);
 
                 GameObject tileGameObject = new GameObject();
                 tileGameObject.name = "Tile_" + x + "_" + y;
@@ -25,7 +36,7 @@ public class WorldController : MonoBehaviour {
             }
         }
 
-        world.RandomizeTiles();
+        World.RandomizeTiles();
     }
 
     float randomizeTileTimer = 2f;
