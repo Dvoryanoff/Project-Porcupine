@@ -14,13 +14,14 @@ public class WorldController : MonoBehaviour {
 
                 Tile tile_data = world.GetTileAt(x, y);
 
-                GameObject tile_go = new GameObject();
-                tile_go.name = "Tile_" + x + "_" + y;
-                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
+                GameObject tileGameObject = new GameObject();
+                tileGameObject.name = "Tile_" + x + "_" + y;
+                tileGameObject.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
+                tileGameObject.transform.SetParent(this.transform, true);
 
-                tile_go.AddComponent<SpriteRenderer>();
+                tileGameObject.AddComponent<SpriteRenderer>();
 
-                tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tile_go); });
+                tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tileGameObject); });
             }
         }
 
