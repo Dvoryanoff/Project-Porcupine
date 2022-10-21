@@ -42,6 +42,8 @@ public class MouseController : MonoBehaviour {
             Vector3 deltaFramePosition = lastFramePosition - Camera.main.ScreenToWorldPoint(Input.mousePosition); ;
             Camera.main.transform.Translate(deltaFramePosition);
         }
+
+        Camera.main.orthographicSize = Input.GetAxis("MouseScrollWheel");
     }
 
     private void UpdateDragging() {
