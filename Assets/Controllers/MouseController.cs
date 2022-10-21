@@ -9,10 +9,14 @@ public class MouseController : MonoBehaviour {
     private Vector3 dragStartPosition;
     private Vector3 currentFramePosition;
 
+    private float minCameraZoom = 3f;
+    private float maxCameraZoom = 40f;
+
     List<GameObject> dragPreviewGameobjects;
 
     private void Start() {
         dragPreviewGameobjects = new List<GameObject>();
+        SimplePool.Preload(circleCursorPrefab, 100);
     }
 
     void Update() {
@@ -43,7 +47,8 @@ public class MouseController : MonoBehaviour {
             Camera.main.transform.Translate(deltaFramePosition);
         }
 
-        Camera.main.orthographicSize -= Camera.main.orthographicSize * (Input.GetAxis("Mouse ScrollWheel")) * 3f;
+        Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis("Mouse ScrollWheel");
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, minCameraZoom, maxCameraZoom);
     }
 
     private void UpdateDragging() {
