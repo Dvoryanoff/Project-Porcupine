@@ -43,7 +43,7 @@ public class MouseController : MonoBehaviour {
             Camera.main.transform.Translate(deltaFramePosition);
         }
 
-        Camera.main.orthographicSize = Input.GetAxis("MouseScrollWheel");
+        Camera.main.orthographicSize -= Camera.main.orthographicSize * (Input.GetAxis("Mouse ScrollWheel")) * 3f;
     }
 
     private void UpdateDragging() {
