@@ -11,7 +11,7 @@ public class WorldController : MonoBehaviour {
     public World World {
         get; protected set;
     }
-    void Start() {
+    private void Start() {
 
         if (Instance != null) {
             Debug.Log($"There should never be two worlds!!!");
@@ -39,7 +39,7 @@ public class WorldController : MonoBehaviour {
         World.RandomizeTiles();
     }
 
-    float randomizeTileTimer = 2f;
+    //float randomizeTileTimer = 2f;
 
     //void Update() {
     //    randomizeTileTimer -= Time.deltaTime;
@@ -51,7 +51,7 @@ public class WorldController : MonoBehaviour {
     //    }
     //}
 
-    void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
+    private void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
 
         if (tile_data.Type == Tile.TileType.Floor) {
             tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
@@ -61,6 +61,13 @@ public class WorldController : MonoBehaviour {
             Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
         }
 
+    }
+
+    public Tile GetTileAtWorldCoord(Vector3 coord) {
+        int x = Mathf.FloorToInt(coord.x);
+        int y = Mathf.FloorToInt(coord.y);
+
+        return World.GetTileAt(x, y);
     }
 }
 
