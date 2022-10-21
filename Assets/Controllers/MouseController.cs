@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseController : MonoBehaviour {
@@ -7,6 +8,12 @@ public class MouseController : MonoBehaviour {
     private Vector3 lastFramePosition;
     private Vector3 dragStartPosition;
     private Vector3 currentFramePosition;
+
+    List<GameObject> dragPreviewGameobjects;
+
+    private void Start() {
+        dragPreviewGameobjects = new List<GameObject>();
+    }
 
     void Update() {
 
@@ -57,12 +64,20 @@ public class MouseController : MonoBehaviour {
             (startY, endY) = (endY, startY);
         }
 
+        while (dragPreviewGameobjects.Count > 0) {
+            GameObject previewGameObject = dragPreviewGameobjects[0];
+            dragPreviewGameobjects.RemoveAt(0);
+            SimplePool.Despawn(previewGameObject);
+
+        }
         if (Input.GetMouseButton(0)) {
             for (int x = startX; x <= endX; x++) {
                 for (int y = startY; y <= endY; y++) {
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
                     if (t != null) {
-                        Instantiate(circleCursorPrefab, new Vector3(x, y, 0), Quaternion.identity);
+                        GameObject previewGameObject = SimplePool.Spawn(circleCursorPrefab, new Vector3(x, y, 0), Quaternion.identity);
+                        previewGameObject.transform.SetParent(this.transform, true);
+                        dragPreviewGameobjects.Add(previewGameObject);
                     }
                 }
             }
