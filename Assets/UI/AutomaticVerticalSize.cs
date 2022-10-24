@@ -10,12 +10,13 @@ public class AutomaticVerticalSize : MonoBehaviour {
     }
 
     private void Update() {
-        AdjustSise();
+        //AdjustSise();
     }
 
-    private void AdjustSise() {
+    public void AdjustSise() {
         Vector2 size = this.GetComponent<RectTransform>().sizeDelta;
         size.y = this.transform.childCount * childHeight;
         this.GetComponent<RectTransform>().sizeDelta = size;
     }
+
 }
