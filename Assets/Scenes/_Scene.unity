@@ -123,11 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &135567752 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7772588065647513181, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-  m_PrefabInstance: {fileID: 1170425720546451894}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &583747316
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ffca13ddab2444ebc44de0037c6eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  circleCursor: {fileID: 135567752}
+  circleCursorPrefab: {fileID: 7772588065647513181, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
 --- !u!1 &1758254779
 GameObject:
   m_ObjectHideFlags: 0
@@ -386,60 +381,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1170425720546451894
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513179, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7772588065647513181, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
-      propertyPath: m_Name
-      value: Cursor Circle
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: bc05d73113ff963408f5cb7ed6594058, type: 3}
