@@ -1,0 +1,281 @@
+fileFormatVersion: 2
+guid: bab2f4ac1e5d67046a9e24d27c532bfd
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Door_EW
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 238
+        width: 32
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc41438d39b19644f9d6d4fb774d5b10
+      internalID: -1739403621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Door_NS
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 192
+        width: 4
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f7420bbddd7be34b8ff0e99b1134401
+      internalID: 1167237121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Door_22: -2107735990
+      Door_66: 1709950213
+      Door_75: 320636781
+      Door_21: -275042871
+      Door_48: -1816514814
+      Door_27: 189144428
+      Door_39: 639506504
+      Door_30: 1846113945
+      Door_40: -404900465
+      Door_60: -1925415681
+      Door_35: 1471129647
+      Door_51: 1254907740
+      Door_13: 1004765777
+      Door_68: 467242694
+      Door_4: 738627704
+      Door_42: -1652032534
+      Door_83: -1359031546
+      Door_65: 1827459694
+      Door_58: -1030815978
+      Door_76: 179931460
+      Door_36: 1256499547
+      Door_37: 362055274
+      Door_62: -2100361212
+      Door_54: 1839617196
+      Door_77: 1276851861
+      Door_11: 575809527
+      Door_56: -1037390750
+      Door_87: -1227895171
+      Door_88: -951239835
+      Door_38: 1177706242
+      Door_69: 1905552536
+      Door_70: 263150512
+      Door_85: 1119980068
+      Door_9: 377002683
+      Door_15: -564517685
+      Door_57: 1059572143
+      Door_46: 1150145759
+      Door_50: -1872031674
+      Door_61: -2107571709
+      Door_59: 855879423
+      Door_12: -2065215947
+      Door_72: 2002145206
+      Door_32: -298702478
+      Door_20: -1133792534
+      Door_47: 752340789
+      Door_43: 1799976064
+      Door_82: 115129294
+      Door_80: -472824405
+      Door_74: 1959490606
+      Door_73: 1717159490
+      Door_81: -1251702627
+      Door_3: -2004474906
+      Door_33: 1881961036
+      Door_67: -847980685
+      Door_7: 1497600639
+      Door_NS: 1167237121
+      Door_53: 1760529758
+      Door_10: -1855258446
+      Door_89: 1996948206
+      Door_19: 341736228
+      Door_6: 356841386
+      Door_91: -1393298290
+      Door_29: 1507396100
+      Door_16: 1681702844
+      Door_45: 43535410
+      Door_2: 1040987734
+      Door_EW: -1739403621
+      Door_71: 273329303
+      Door_78: 138658925
+      Door_44: 1321459494
+      Door_64: 1970414211
+      Door_63: 2125549338
+      Door_34: -96011048
+      Door_52: 265045488
+      Door_28: -1630471405
+      Door_23: 1759609185
+      Door_17: 581529719
+      Door_24: -538784964
+      Door_49: -2026403292
+      Door_79: 2016245059
+      Door_8: 1611797364
+      Door_18: -1841285352
+      Door_25: -1483763834
+      Door_86: 1842444857
+      Door_90: -163805196
+      Door_5: -1595083010
+      Door_26: -1455822201
+      Door_92: 359068537
+      Door_14: -397918805
+      Door_55: -1948039753
+      Door_84: -457894941
+      Door_41: 1194557174
+      Door_31: -2087145364
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
