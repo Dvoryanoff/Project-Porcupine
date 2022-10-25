@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseController : MonoBehaviour {
 
     [SerializeField] private GameObject circleCursorPrefab;
+
+    Tile.TileType buildModelTile = Tile.TileType.Floor;
 
     private Vector3 lastFramePosition;
     private Vector3 dragStartPosition;
@@ -52,6 +55,10 @@ public class MouseController : MonoBehaviour {
     }
 
     private void UpdateDragging() {
+
+        if (EventSystem.current.IsPointerOverGameObject()) {
+            return;
+        }
         // Start Drag
 
         if (Input.GetMouseButtonDown(0)) {
@@ -97,11 +104,20 @@ public class MouseController : MonoBehaviour {
                 for (int y = startY; y <= endY; y++) {
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
                     if (t != null) {
-                        t.Type = Tile.TileType.Floor;
+                        t.Type = buildModelTile;
                     }
                 }
             }
         }
+    }
+
+    public void SetModeBuildFloor() {
+        buildModelTile = Tile.TileType.Floor;
+
+    }
+
+    public void SetModeBulldoze() {
+        buildModelTile = Tile.TileType.Empty;
     }
 }
 
