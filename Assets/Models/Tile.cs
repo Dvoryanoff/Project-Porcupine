@@ -1,4 +1,5 @@
 using System;
+using Debug = UnityEngine.Debug;
 
 public class Tile {
 
@@ -44,6 +45,22 @@ public class Tile {
 
     public void UnegisterTileTypeChangedCallback(Action<Tile> callback) {
         cbTileTypeChanged -= callback;
+    }
+
+    public bool PlaceObject(InstalledObject objInstance) {
+        if (objInstance == null) {
+            installedObject = null;
+            return true;
+        }
+
+        if (installedObject != null) {
+            Debug.LogError("Trying to assing an installed object to a tile that already have one!");
+            return false;
+        }
+
+        installedObject = objInstance;
+        return true;
+
     }
 
 }

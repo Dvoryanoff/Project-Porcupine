@@ -1,9 +1,11 @@
-
+using System.Collections.Generic;
 using UnityEngine;
 
 public class World {
 
     Tile[,] tiles;
+
+    Dictionary<string, InstalledObject> installedObjectsPrototype;
 
     public int Width {
         get; protected set;
@@ -24,8 +26,16 @@ public class World {
                 tiles[x, y] = new Tile(this, x, y);
             }
         }
-
         Debug.Log("World created with " + (Width * Height) + " tiles.");
+
+        CreateInstalledObjectsPrototype();
+
+    }
+
+    protected void CreateInstalledObjectsPrototype() {
+        installedObjectsPrototype = new Dictionary<string, InstalledObject>();
+
+        installedObjectsPrototype.Add("Wall", InstalledObject.CreatePrototype("Wall", 0, 1, 1));
     }
 
     public void RandomizeTiles() {
