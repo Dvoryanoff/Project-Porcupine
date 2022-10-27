@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -7,6 +8,8 @@ public class World {
     Tile[,] tiles;
 
     Dictionary<string, InstalledObject> installedObjectsPrototype;
+
+    Action<InstalledObject> CallBackInstalledObjectCreated;
 
     public int Width {
         get; protected set;
@@ -71,7 +74,19 @@ public class World {
         }
         Debug.Log("PlaceInstalledOblect");
 
-        InstalledObject.PlaceInstance(installedObjectsPrototype[objectType], t);
+        InstalledObject obj = InstalledObject.PlaceInstance(installedObjectsPrototype[objectType], t);
 
+        if (CallBackInstalledObjectCreated != null) {
+            CallBackInstalledObjectCreated(obj);
+        }
+
+    }
+
+    public void RegisterInstalledObjectCreated(Action<InstalledObject> callbackFunc) {
+        CallBackInstalledObjectCreated += callbackFunc;
+    }
+
+    public void UnRegisterInstalledObjectCreated(Action<InstalledObject> callbackFunc) {
+        CallBackInstalledObjectCreated -= callbackFunc;
     }
 }

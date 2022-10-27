@@ -20,6 +20,7 @@ public class WorldController : MonoBehaviour {
 
         World = new World();
 
+        World.RegisterInstalledObjectCreated(OnInstalledObjectCreated);
         for (int x = 0; x < World.Width; x++) {
             for (int y = 0; y < World.Height; y++) {
 
@@ -51,7 +52,7 @@ public class WorldController : MonoBehaviour {
     //    }
     //}
 
-    private void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
+    public void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
 
         if (tile_data.Type == Tile.TileType.Floor) {
             tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
@@ -68,6 +69,10 @@ public class WorldController : MonoBehaviour {
         int y = Mathf.FloorToInt(coord.y);
 
         return World.GetTileAt(x, y);
+    }
+
+    public void OnInstalledObjectCreated(InstalledObject obj) {
+        // Create a visual Game Object linked to this data.
     }
 }
 
