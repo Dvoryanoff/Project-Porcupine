@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class World {
 
@@ -59,5 +60,18 @@ public class World {
             return null;
         }
         return tiles[x, y];
+    }
+
+    internal void PlaceInstalledOblect(string objectType, Tile t) {
+        // TODO: This function assumes 1x1 tile only ----- fix it later
+
+        if (installedObjectsPrototype.ContainsKey(objectType) == false) {
+            Debug.LogError($"installedObjectProrotybe doesn't contains key: {objectType}");
+            return;
+        }
+        Debug.Log("PlaceInstalledOblect");
+
+        InstalledObject.PlaceInstance(installedObjectsPrototype[objectType], t);
+
     }
 }

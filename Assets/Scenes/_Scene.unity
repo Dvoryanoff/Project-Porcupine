@@ -1315,7 +1315,7 @@ GameObject:
   - component: {fileID: 2057215831}
   - component: {fileID: 2057215830}
   m_Layer: 5
-  m_Name: utton -Build Wall
+  m_Name: Button -Build Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1388,14 +1388,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1433496535}
         m_TargetAssemblyTypeName: MouseController, Assembly-CSharp
-        m_MethodName: SetModeBulldoze
-        m_Mode: 1
+        m_MethodName: SetMode_BuildInstalledObject
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Wall
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2057215831
