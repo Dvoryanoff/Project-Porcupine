@@ -428,7 +428,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1433496535}
         m_TargetAssemblyTypeName: MouseController, Assembly-CSharp
-        m_MethodName: SetModeBulldoze
+        m_MethodName: SetMode_Bulldoze
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -832,7 +832,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1433496535}
         m_TargetAssemblyTypeName: MouseController, Assembly-CSharp
-        m_MethodName: SetModeBuildFloor
+        m_MethodName: SetMode_BuildFloor
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1090,6 +1090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c6dbe5cb0f6caf40a3cb81e30519cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallSprite: {fileID: 1218996702, guid: 66cb1967a42640e4190208a05f68e524, type: 3}
   floorSprite: {fileID: 21300000, guid: 3587b2419ee91d441bcbda59d06e6186, type: 3}
 --- !u!4 &1318234612
 Transform:

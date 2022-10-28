@@ -1,9 +1,8 @@
 using System;
 using Debug = UnityEngine.Debug;
 
+public enum TileType { Empty, Floor };
 public class Tile {
-
-    public enum TileType { Empty, Floor };
 
     private TileType _type = TileType.Empty;
 
@@ -43,7 +42,7 @@ public class Tile {
         cbTileTypeChanged += callback;
     }
 
-    public void UnegisterTileTypeChangedCallback(Action<Tile> callback) {
+    public void UnregisterTileTypeChangedCallback(Action<Tile> callback) {
         cbTileTypeChanged -= callback;
     }
 

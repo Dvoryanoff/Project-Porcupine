@@ -1,12 +1,18 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class WorldController : MonoBehaviour {
 
+    Dictionary<Tile, GameObject> tileGameobjectMap;
+    Dictionary<InstalledObject, GameObject> installedObjectGameobjectMap;
+
+    [SerializeField] private Sprite wallSprite; // FIXME!
+    [SerializeField] private Sprite floorSprite; // FIXME!
+
     public static WorldController Instance {
         get; protected set;
     }
-
-    public Sprite floorSprite;
 
     public World World {
         get; protected set;
@@ -19,48 +25,79 @@ public class WorldController : MonoBehaviour {
         Instance = this;
 
         World = new World();
-
         World.RegisterInstalledObjectCreated(OnInstalledObjectCreated);
+
+        tileGameobjectMap = new Dictionary<Tile, GameObject>();
+        installedObjectGameobjectMap = new Dictionary<InstalledObject, GameObject>();
+
         for (int x = 0; x < World.Width; x++) {
             for (int y = 0; y < World.Height; y++) {
 
                 Tile tile_data = World.GetTileAt(x, y);
 
                 GameObject tileGameObject = new GameObject();
+
+                tileGameobjectMap.Add(tile_data, tileGameObject);
+
                 tileGameObject.name = "Tile_" + x + "_" + y;
                 tileGameObject.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
                 tileGameObject.transform.SetParent(this.transform, true);
 
                 tileGameObject.AddComponent<SpriteRenderer>();
 
-                tile_data.RegisterTileTypeChangedCallback((tile) => { OnTileTypeChanged(tile, tileGameObject); });
+                tile_data.RegisterTileTypeChangedCallback(OnTileTypeChanged);
             }
         }
 
         World.RandomizeTiles();
     }
 
-    //float randomizeTileTimer = 2f;
+    private void DestroyAllTileGameobjects() {
+        while (tileGameobjectMap.Count > 0) {
+            Tile tile_data = tileGameobjectMap.Keys.First();
+            GameObject tileGameObject = tileGameobjectMap[tile_data];
 
-    //void Update() {
-    //    randomizeTileTimer -= Time.deltaTime;
-    //
-    //    if (randomizeTileTimer < 0) {
-    //        world.RandomizeTiles();
-    //        randomizeTileTimer = 2f;
-    //
-    //    }
-    //}
+            tileGameobjectMap.Remove(tile_data);
 
-    public void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
+            tile_data.UnregisterTileTypeChangedCallback(OnTileTypeChanged);
 
-        if (tile_data.Type == Tile.TileType.Floor) {
+            Destroy(tileGameObject);
+
+        }
+    }
+
+    public void OnTileTypeChanged(Tile tile_data) {
+
+        if (tileGameobjectMap.ContainsKey(tile_data) == false) {
+            Debug.LogError($"tileGameobjectMap doesn/t contain tole data!");
+            return;
+        }
+
+        GameObject tile_go = tileGameobjectMap[tile_data];
+
+        if (tile_go == null) {
+            Debug.LogError($"tileGameobjectMap doesn/t contain tole data!");
+            return;
+        }
+
+        if (tile_data.Type == TileType.Floor) {
             tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
-        } else if (tile_data.Type == Tile.TileType.Empty) {
-            tile_go.GetComponent<SpriteRenderer>().sprite = null;
+        } else if (tile_data.Type == TileType.Empty) {
+            tile_go.GetComponent<SpriteRenderer>().sprite = null; // FIXME!
         } else {
             Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
         }
+        //float randomizeTileTimer = 2f;
+
+        //void Update() {
+        //    randomizeTileTimer -= Time.deltaTime;
+        //
+        //    if (randomizeTileTimer < 0) {
+        //        world.RandomizeTiles();
+        //        randomizeTileTimer = 2f;
+        //
+        //    }
+        //}
 
     }
 
@@ -72,7 +109,28 @@ public class WorldController : MonoBehaviour {
     }
 
     public void OnInstalledObjectCreated(InstalledObject obj) {
+
+        Debug.Log("OnInstalledObjectCreated");
         // Create a visual Game Object linked to this data.
+
+        GameObject objGameObject = new GameObject();
+
+        installedObjectGameobjectMap.Add(obj, objGameObject);
+
+        objGameObject.name = obj.objectType + "_" + obj.tile.X + "_" + obj.tile.Y;
+        objGameObject.transform.position = new Vector3(obj.tile.X, obj.tile.Y, 0);
+        objGameObject.transform.SetParent(this.transform, true);
+        // objGameObject.S
+
+        objGameObject.AddComponent<SpriteRenderer>().sprite = wallSprite;
+        //objGameObject.GetComponent<SpriteRenderer>().sortingLayerName = "GameObjects";
+        objGameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
+
+        obj.RegisterOnChangedCallback(OnInstalledObjectChange);
+    }
+
+    private void OnInstalledObjectChange(InstalledObject obj) {
+        Debug.LogError("OnInstalledObjectChange ---- NOT IMPEMENTED!");
     }
 }
 

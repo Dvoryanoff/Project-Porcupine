@@ -5,9 +5,10 @@ using UnityEngine.EventSystems;
 public class MouseController : MonoBehaviour {
 
     [SerializeField] private GameObject circleCursorPrefab;
+    TileType buildModelTile = TileType.Floor;
     bool buildModeIsObjects = false;
 
-    Tile.TileType buildModelTile = Tile.TileType.Floor;
+    //Tile.TileType buildModelTile = Tile.TileType.Floor;
     string buildModeObjectType;
 
     private Vector3 lastFramePosition;
@@ -119,13 +120,13 @@ public class MouseController : MonoBehaviour {
 
     public void SetMode_BuildFloor() {
         buildModeIsObjects = false;
-        buildModelTile = Tile.TileType.Floor;
+        buildModelTile = TileType.Floor;
 
     }
 
     public void SetMode_Bulldoze() {
         buildModeIsObjects = false;
-        buildModelTile = Tile.TileType.Empty;
+        buildModelTile = TileType.Empty;
     }
 
     public void SetMode_BuildInstalledObject(string objectType) {
@@ -144,4 +145,3 @@ public class MouseController : MonoBehaviour {
 //        circleCursor.transform.position = cursorPosition;
 //    } else { circleCursor.SetActive(false); }
 //}
-

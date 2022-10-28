@@ -9,8 +9,6 @@ public class World {
 
     Dictionary<string, InstalledObject> installedObjectsPrototype;
 
-    Action<InstalledObject> CallBackInstalledObjectCreated;
-
     public int Width {
         get; protected set;
     }
@@ -18,6 +16,7 @@ public class World {
     public int Height {
         get; protected set;
     }
+    Action<InstalledObject> CallBackInstalledObjectCreated;
 
     public World(int width = 100, int height = 100) {
         Width = width;
@@ -30,6 +29,7 @@ public class World {
                 tiles[x, y] = new Tile(this, x, y);
             }
         }
+
         Debug.Log("World created with " + (Width * Height) + " tiles.");
 
         CreateInstalledObjectsPrototype();
@@ -48,11 +48,10 @@ public class World {
             for (int y = 0; y < Height; y++) {
 
                 if (Random.Range(0, 2) == 0) {
-                    tiles[x, y].Type = Tile.TileType.Empty;
+                    tiles[x, y].Type = TileType.Empty;
                 } else {
-                    tiles[x, y].Type = Tile.TileType.Floor;
+                    tiles[x, y].Type = TileType.Floor;
                 }
-
             }
         }
     }
@@ -75,6 +74,11 @@ public class World {
         Debug.Log("PlaceInstalledOblect");
 
         InstalledObject obj = InstalledObject.PlaceInstance(installedObjectsPrototype[objectType], t);
+
+        if (obj == null) {
+            // Failed to place object -- most likely there was already something there.
+            return;
+        }
 
         if (CallBackInstalledObjectCreated != null) {
             CallBackInstalledObjectCreated(obj);
