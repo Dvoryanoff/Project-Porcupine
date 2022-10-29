@@ -130,11 +130,55 @@ public class WorldController : MonoBehaviour {
         objGameObject.transform.SetParent(this.transform, true);
         // objGameObject.S
 
-        objGameObject.AddComponent<SpriteRenderer>().sprite = installObjectsSprites["Wall_"];
+        objGameObject.AddComponent<SpriteRenderer>().sprite = GetSpriteForInstalledObject(obj);
         //objGameObject.GetComponent<SpriteRenderer>().sortingLayerName = "GameObjects";
         objGameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
         obj.RegisterOnChangedCallback(OnInstalledObjectChange);
+    }
+
+    Sprite GetSpriteForInstalledObject(InstalledObject obj) {
+        if (obj.linksToNeighbour == false) {
+            return installObjectsSprites[obj.objectType];
+        }
+
+        string spriteName = $"{obj.objectType}_";
+
+        // Check neighbours for North, East, South, West!
+
+        Tile t;
+
+        int x = obj.tile.X;
+        int y = obj.tile.Y;
+
+        t = World.GetTileAt(x, y + 1);
+        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+            spriteName += "N";
+        }
+
+        t = World.GetTileAt(x + 1, y);
+        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+            spriteName += "E";
+        }
+
+        t = World.GetTileAt(x, y - 1);
+        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+            spriteName += "S";
+        }
+
+        t = World.GetTileAt(x - 1, y + 1);
+        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+            spriteName += "W";
+        }
+
+        if (installObjectsSprites.ContainsKey(spriteName) == false) {
+            Debug.LogError($"GetSpritesForInstalledObjects: -- No sprites with name: {spriteName}");
+            return null;
+        }
+
+        Debug.Log(spriteName);
+        return installObjectsSprites[spriteName];
+
     }
 
     private void OnInstalledObjectChange(InstalledObject obj) {

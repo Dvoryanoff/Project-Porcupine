@@ -39,7 +39,7 @@ public class World {
     protected void CreateInstalledObjectsPrototype() {
         installedObjectsPrototype = new Dictionary<string, InstalledObject>();
 
-        installedObjectsPrototype.Add("Wall", InstalledObject.CreatePrototype("Wall", 0, 1, 1));
+        installedObjectsPrototype.Add("Wall", InstalledObject.CreatePrototype("Wall", 0, 1, 1, true));
     }
 
     public void RandomizeTiles() {
