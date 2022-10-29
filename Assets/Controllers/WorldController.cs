@@ -6,8 +6,8 @@ public class WorldController : MonoBehaviour {
 
     Dictionary<Tile, GameObject> tileGameobjectMap;
     Dictionary<InstalledObject, GameObject> installedObjectGameobjectMap;
+    Dictionary<string, Sprite> installObjectsSprites;
 
-    [SerializeField] private Sprite wallSprite; // FIXME!
     [SerializeField] private Sprite floorSprite; // FIXME!
 
     public static WorldController Instance {
@@ -19,6 +19,14 @@ public class WorldController : MonoBehaviour {
     }
     private void Start() {
 
+        installObjectsSprites = new Dictionary<string, Sprite>();
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Images/InstalledObjects");
+        Debug.Log("LOADED RESOURCES:");
+
+        foreach (Sprite s in sprites) {
+            Debug.Log(s);
+            installObjectsSprites[s.name] = s;
+        }
         if (Instance != null) {
             Debug.Log($"There should never be two worlds!!!");
         }
@@ -122,7 +130,7 @@ public class WorldController : MonoBehaviour {
         objGameObject.transform.SetParent(this.transform, true);
         // objGameObject.S
 
-        objGameObject.AddComponent<SpriteRenderer>().sprite = wallSprite;
+        objGameObject.AddComponent<SpriteRenderer>().sprite = installObjectsSprites["Wall_"];
         //objGameObject.GetComponent<SpriteRenderer>().sortingLayerName = "GameObjects";
         objGameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
