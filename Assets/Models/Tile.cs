@@ -20,13 +20,15 @@ public class Tile {
         }
     }
 
-    LooseObject looseObject;
+    Inventory inventory;
 
-    public InstalledObject installedObject {
+    public Furniture furniture {
         get; protected set;
     }
 
-    World world;
+    public World world {
+        get; protected set;
+    }
     public int X {
         get; protected set;
     }
@@ -48,18 +50,18 @@ public class Tile {
         cbTileTypeChanged -= callback;
     }
 
-    public bool PlaceObject(InstalledObject objInstance) {
+    public bool PlaceFurniture(Furniture objInstance) {
         if (objInstance == null) {
-            installedObject = null;
+            furniture = null;
             return true;
         }
 
-        if (installedObject != null) {
-            Debug.LogError("Trying to assing an installed object to a tile that already have one!");
+        if (furniture != null) {
+            Debug.LogError("Trying to assing an furniture object to a tile that already have one!");
             return false;
         }
 
-        installedObject = objInstance;
+        furniture = objInstance;
         return true;
 
     }

@@ -7,7 +7,7 @@ public class World {
 
     Tile[,] tiles;
 
-    Dictionary<string, InstalledObject> installedObjectsPrototype;
+    Dictionary<string, Furniture> installedObjectsPrototype;
 
     public int Width {
         get; protected set;
@@ -16,7 +16,7 @@ public class World {
     public int Height {
         get; protected set;
     }
-    Action<InstalledObject> CallBackInstalledObjectCreated;
+    Action<Furniture> CallBackInstalledObjectCreated;
 
     public World(int width = 100, int height = 100) {
         Width = width;
@@ -37,9 +37,9 @@ public class World {
     }
 
     protected void CreateInstalledObjectsPrototype() {
-        installedObjectsPrototype = new Dictionary<string, InstalledObject>();
+        installedObjectsPrototype = new Dictionary<string, Furniture>();
 
-        installedObjectsPrototype.Add("Wall", InstalledObject.CreatePrototype("Wall", 0, 1, 1, true));
+        installedObjectsPrototype.Add("Wall", Furniture.CreatePrototype("Wall", 0, 1, 1, true));
     }
 
     public void RandomizeTiles() {
@@ -73,7 +73,7 @@ public class World {
         }
         Debug.Log("PlaceInstalledOblect");
 
-        InstalledObject obj = InstalledObject.PlaceInstance(installedObjectsPrototype[objectType], t);
+        Furniture obj = Furniture.PlaceInstance(installedObjectsPrototype[objectType], t);
 
         if (obj == null) {
             // Failed to place object -- most likely there was already something there.
@@ -86,11 +86,11 @@ public class World {
 
     }
 
-    public void RegisterInstalledObjectCreated(Action<InstalledObject> callbackFunc) {
+    public void RegisterInstalledObjectCreated(Action<Furniture> callbackFunc) {
         CallBackInstalledObjectCreated += callbackFunc;
     }
 
-    public void UnRegisterInstalledObjectCreated(Action<InstalledObject> callbackFunc) {
+    public void UnRegisterInstalledObjectCreated(Action<Furniture> callbackFunc) {
         CallBackInstalledObjectCreated -= callbackFunc;
     }
 }

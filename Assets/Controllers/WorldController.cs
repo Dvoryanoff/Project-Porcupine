@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldController : MonoBehaviour {
 
     Dictionary<Tile, GameObject> tileGameobjectMap;
-    Dictionary<InstalledObject, GameObject> installedObjectGameobjectMap;
+    Dictionary<Furniture, GameObject> furnitureGameobjectMap;
     Dictionary<string, Sprite> installObjectsSprites;
 
     [SerializeField] private Sprite floorSprite; // FIXME!
@@ -33,10 +33,10 @@ public class WorldController : MonoBehaviour {
         Instance = this;
 
         World = new World();
-        World.RegisterInstalledObjectCreated(OnInstalledObjectCreated);
+        World.RegisterInstalledObjectCreated(OnFurnitureCreated);
 
         tileGameobjectMap = new Dictionary<Tile, GameObject>();
-        installedObjectGameobjectMap = new Dictionary<InstalledObject, GameObject>();
+        furnitureGameobjectMap = new Dictionary<Furniture, GameObject>();
 
         for (int x = 0; x < World.Width; x++) {
             for (int y = 0; y < World.Height; y++) {
@@ -116,28 +116,40 @@ public class WorldController : MonoBehaviour {
         return World.GetTileAt(x, y);
     }
 
-    public void OnInstalledObjectCreated(InstalledObject obj) {
+    public void OnFurnitureCreated(Furniture furn) {
 
         Debug.Log("OnInstalledObjectCreated");
         // Create a visual Game Object linked to this data.
 
-        GameObject objGameObject = new GameObject();
+        GameObject furn_go = new GameObject();
 
-        installedObjectGameobjectMap.Add(obj, objGameObject);
+        furnitureGameobjectMap.Add(furn, furn_go);
 
-        objGameObject.name = obj.objectType + "_" + obj.tile.X + "_" + obj.tile.Y;
-        objGameObject.transform.position = new Vector3(obj.tile.X, obj.tile.Y, 0);
-        objGameObject.transform.SetParent(this.transform, true);
-        // objGameObject.S
+        furn_go.name = furn.objectType + "_" + furn.tile.X + "_" + furn.tile.Y;
+        furn_go.transform.position = new Vector3(furn.tile.X, furn.tile.Y, 0);
+        furn_go.transform.SetParent(this.transform, true);
 
-        objGameObject.AddComponent<SpriteRenderer>().sprite = GetSpriteForInstalledObject(obj);
-        //objGameObject.GetComponent<SpriteRenderer>().sortingLayerName = "GameObjects";
-        objGameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        furn_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
+        furn_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-        obj.RegisterOnChangedCallback(OnInstalledObjectChange);
+        furn.RegisterOnChangedCallback(OnFurnitureChange);
     }
 
-    Sprite GetSpriteForInstalledObject(InstalledObject obj) {
+    private void OnFurnitureChange(Furniture furn) {
+
+        // Make sure that furnityre graphics are corrrect.
+
+        if (furnitureGameobjectMap.ContainsKey(furn) == false) {
+            Debug.LogError("OnFurnitureChanged -- trying to change visuals for furniture not in our map");
+            return;
+        }
+
+        GameObject furn_go = furnitureGameobjectMap[furn];
+        furn_go.GetComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
+
+    }
+
+    Sprite GetSpriteForFurniture(Furniture obj) {
         if (obj.linksToNeighbour == false) {
             return installObjectsSprites[obj.objectType];
         }
@@ -152,37 +164,34 @@ public class WorldController : MonoBehaviour {
         int y = obj.tile.Y;
 
         t = World.GetTileAt(x, y + 1);
-        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
             spriteName += "N";
         }
 
         t = World.GetTileAt(x + 1, y);
-        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
             spriteName += "E";
         }
 
         t = World.GetTileAt(x, y - 1);
-        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
             spriteName += "S";
         }
 
-        t = World.GetTileAt(x - 1, y + 1);
-        if (t != null && t.installedObject != null && t.installedObject.objectType == obj.objectType) {
+        t = World.GetTileAt(x - 1, y);
+        if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
             spriteName += "W";
         }
 
-        if (installObjectsSprites.ContainsKey(spriteName) == false) {
-            Debug.LogError($"GetSpritesForInstalledObjects: -- No sprites with name: {spriteName}");
-            return null;
-        }
+        //if (furnitureSprites.ContainsKey(spriteName) == false) {
+        //    Debug.LogError($"GetSpritesForInstalledObjects: -- No sprites with name: {spriteName}");
+        //    return null;
+        //}
 
-        Debug.Log(spriteName);
+        Debug.Log($" Need sprite {spriteName}");
         return installObjectsSprites[spriteName];
 
     }
 
-    private void OnInstalledObjectChange(InstalledObject obj) {
-        Debug.LogError("OnInstalledObjectChange ---- NOT IMPEMENTED!");
-    }
 }
 
