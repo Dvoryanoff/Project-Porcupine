@@ -20,7 +20,7 @@ public class WorldController : MonoBehaviour {
     private void Start() {
 
         installObjectsSprites = new Dictionary<string, Sprite>();
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Images/InstalledObjects");
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Images/Furniture");
         Debug.Log("LOADED RESOURCES:");
 
         foreach (Sprite s in sprites) {
@@ -140,7 +140,7 @@ public class WorldController : MonoBehaviour {
         // Make sure that furnityre graphics are corrrect.
 
         if (furnitureGameobjectMap.ContainsKey(furn) == false) {
-            Debug.LogError("OnFurnitureChanged -- trying to change visuals for furniture not in our map");
+            // Debug.LogError("OnFurnitureChanged -- trying to change visuals for furniture not in our map");
             return;
         }
 
@@ -188,7 +188,7 @@ public class WorldController : MonoBehaviour {
         //    return null;
         //}
 
-        Debug.Log($" Need sprite {spriteName}");
+        // Debug.Log($" Need sprite {spriteName}");
         return installObjectsSprites[spriteName];
 
     }

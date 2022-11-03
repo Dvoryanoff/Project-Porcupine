@@ -143,8 +143,8 @@ TextureImporter:
       name: Wall_ES
       rect:
         serializedVersion: 2
-        x: 320
-        y: 96
+        x: 0
+        y: 160
         width: 32
         height: 32
       alignment: 6
@@ -227,8 +227,8 @@ TextureImporter:
       name: Wall_NES
       rect:
         serializedVersion: 2
-        x: 320
-        y: 64
+        x: 128
+        y: 193
         width: 32
         height: 32
       alignment: 6
@@ -249,7 +249,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 352
-        y: 64
+        y: 193
         width: 32
         height: 32
       alignment: 6
@@ -269,8 +269,8 @@ TextureImporter:
       name: Wall_NE
       rect:
         serializedVersion: 2
-        x: 320
-        y: 32
+        x: 0
+        y: 96
         width: 32
         height: 32
       alignment: 6
@@ -290,8 +290,8 @@ TextureImporter:
       name: Wall_SW
       rect:
         serializedVersion: 2
-        x: 384
-        y: 96
+        x: 64
+        y: 160
         width: 32
         height: 32
       alignment: 6
@@ -311,8 +311,8 @@ TextureImporter:
       name: Wall_NW
       rect:
         serializedVersion: 2
-        x: 384
-        y: 32
+        x: 64
+        y: 96
         width: 32
         height: 32
       alignment: 6
@@ -395,8 +395,8 @@ TextureImporter:
       name: Wall_NSW
       rect:
         serializedVersion: 2
-        x: 384
-        y: 64
+        x: 256
+        y: 193
         width: 32
         height: 32
       alignment: 6
@@ -416,8 +416,8 @@ TextureImporter:
       name: Wall_NEW
       rect:
         serializedVersion: 2
-        x: 352
-        y: 32
+        x: 192
+        y: 96
         width: 32
         height: 32
       alignment: 6
@@ -437,8 +437,8 @@ TextureImporter:
       name: Wall_ESW
       rect:
         serializedVersion: 2
-        x: 352
-        y: 96
+        x: 192
+        y: 32
         width: 32
         height: 32
       alignment: 6
@@ -468,7 +468,7 @@ TextureImporter:
       Wall_NES: 21300024
       Wall_E: 21300018
       Wall_NS: 898192123
-      Wall_W: -1444402222
+      Wall_N: 21300022
       Wall_NSW: 1225054283
       Wall_ESW: 660805283
       Wall_: 21300016
@@ -478,8 +478,8 @@ TextureImporter:
       Wall_NW: -1915730679
       Wall_ES: 21300002
       Wall_NE: -1369884595
-      Wall_N: 21300022
       Wall_SW: 363546057
+      Wall_W: -1444402222
       Wall_EW: 929008365
   spritePackingTag: 
   pSDRemoveMatte: 1
