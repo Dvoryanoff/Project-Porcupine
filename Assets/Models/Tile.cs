@@ -6,7 +6,8 @@ public class Tile {
 
     private TileType _type = TileType.Empty;
 
-    Action<Tile> cbTileTypeChanged;
+    Action<Tile> cbTileChanged;
+
     public TileType Type {
         get {
             return _type;
@@ -15,8 +16,8 @@ public class Tile {
             TileType oldType = _type;
             _type = value;
 
-            if (cbTileTypeChanged != null && oldType != _type)
-                cbTileTypeChanged(this);
+            if (cbTileChanged != null && oldType != _type)
+                cbTileChanged(this);
         }
     }
 
@@ -43,11 +44,11 @@ public class Tile {
     }
 
     public void RegisterTileTypeChangedCallback(Action<Tile> callback) {
-        cbTileTypeChanged += callback;
+        cbTileChanged += callback;
     }
 
     public void UnregisterTileTypeChangedCallback(Action<Tile> callback) {
-        cbTileTypeChanged -= callback;
+        cbTileChanged -= callback;
     }
 
     public bool PlaceFurniture(Furniture objInstance) {

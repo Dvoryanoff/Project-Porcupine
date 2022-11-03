@@ -16,7 +16,8 @@ public class World {
     public int Height {
         get; protected set;
     }
-    Action<Furniture> CallBackInstalledObjectCreated;
+    Action<Furniture> cbFurnitureCreated;
+    Action<Tile> cbTileChanged;
 
     public World(int width = 100, int height = 100) {
         Width = width;
@@ -27,6 +28,7 @@ public class World {
         for (int x = 0; x < Width; x++) {
             for (int y = 0; y < Height; y++) {
                 tiles[x, y] = new Tile(this, x, y);
+                tiles[x, y].RegisterTileTypeChangedCallback(OnTileChanged);
             }
         }
 
@@ -80,17 +82,32 @@ public class World {
             return;
         }
 
-        if (CallBackInstalledObjectCreated != null) {
-            CallBackInstalledObjectCreated(obj);
+        if (cbFurnitureCreated != null) {
+            cbFurnitureCreated(obj);
         }
 
     }
 
-    public void RegisterInstalledObjectCreated(Action<Furniture> callbackFunc) {
-        CallBackInstalledObjectCreated += callbackFunc;
+    public void RegisterFurnitureCreated(Action<Furniture> callbackFunc) {
+        cbFurnitureCreated += callbackFunc;
     }
 
-    public void UnRegisterInstalledObjectCreated(Action<Furniture> callbackFunc) {
-        CallBackInstalledObjectCreated -= callbackFunc;
+    public void UnRegisterFurnitureCreated(Action<Furniture> callbackFunc) {
+        cbFurnitureCreated -= callbackFunc;
+    }
+
+    public void RegisterTileChanged(Action<Tile> callbackFunc) {
+        cbTileChanged += callbackFunc;
+    }
+
+    public void UnRegisterTileChanged(Action<Tile> callbackFunc) {
+        cbTileChanged -= callbackFunc;
+    }
+
+    public void OnTileChanged(Tile tile) {
+        if (tile == null) {
+            return;
+        }
+        cbTileChanged(tile);
     }
 }

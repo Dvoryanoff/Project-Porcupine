@@ -18,7 +18,7 @@ public class WorldController : MonoBehaviour {
     public World World {
         get; protected set;
     }
-    private void Start() {
+    private void OnEnable() {
 
         LoadSprites();
 
@@ -28,7 +28,7 @@ public class WorldController : MonoBehaviour {
         Instance = this;
 
         World = new World();
-        World.RegisterInstalledObjectCreated(OnFurnitureCreated);
+        World.RegisterFurnitureCreated(OnFurnitureCreated);
 
         tileGameobjectMap = new Dictionary<Tile, GameObject>();
         furnitureGameobjectMap = new Dictionary<Furniture, GameObject>();
@@ -51,11 +51,13 @@ public class WorldController : MonoBehaviour {
 
                 tileGameObject.AddComponent<SpriteRenderer>().sprite = emptySprite;
 
-                tile_data.RegisterTileTypeChangedCallback(OnTileTypeChanged);
+                tile_data.RegisterTileTypeChangedCallback(OnTileChanged);
             }
         }
 
         // World.RandomizeTiles();
+
+        World.RegisterTileChanged(OnTileChanged);
 
         // Center the camera.
 
@@ -80,14 +82,15 @@ public class WorldController : MonoBehaviour {
 
             tileGameobjectMap.Remove(tile_data);
 
-            tile_data.UnregisterTileTypeChangedCallback(OnTileTypeChanged);
+            tile_data.UnregisterTileTypeChangedCallback(OnTileChanged);
 
             Destroy(tileGameObject);
-
         }
     }
 
-    public void OnTileTypeChanged(Tile tile_data) {
+    // Called whenever tile's data get changed.
+
+    public void OnTileChanged(Tile tile_data) {
 
         if (tileGameobjectMap.ContainsKey(tile_data) == false) {
             Debug.LogError($"tileGameobjectMap doesn/t contain tole data!");
@@ -108,18 +111,6 @@ public class WorldController : MonoBehaviour {
         } else {
             Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
         }
-        //float randomizeTileTimer = 2f;
-
-        //void Update() {
-        //    randomizeTileTimer -= Time.deltaTime;
-        //
-        //    if (randomizeTileTimer < 0) {
-        //        world.RandomizeTiles();
-        //        randomizeTileTimer = 2f;
-        //
-        //    }
-        //}
-
     }
 
     public Tile GetTileAtWorldCoord(Vector3 coord) {
@@ -132,6 +123,7 @@ public class WorldController : MonoBehaviour {
     public void OnFurnitureCreated(Furniture furn) {
 
         Debug.Log("OnInstalledObjectCreated");
+
         // Create a visual Game Object linked to this data.
 
         GameObject furn_go = new GameObject();
@@ -153,7 +145,6 @@ public class WorldController : MonoBehaviour {
         // Make sure that furnityre graphics are corrrect.
 
         if (furnitureGameobjectMap.ContainsKey(furn) == false) {
-            // Debug.LogError("OnFurnitureChanged -- trying to change visuals for furniture not in our map");
             return;
         }
 
@@ -201,7 +192,6 @@ public class WorldController : MonoBehaviour {
         //    return null;
         //}
 
-        // Debug.Log($" Need sprite {spriteName}");
         return installObjectsSprites[spriteName];
 
     }
