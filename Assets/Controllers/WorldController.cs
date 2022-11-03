@@ -9,6 +9,7 @@ public class WorldController : MonoBehaviour {
     Dictionary<string, Sprite> installObjectsSprites;
 
     [SerializeField] private Sprite floorSprite; // FIXME!
+    [SerializeField] private Sprite emptySprite; // FIXME!
 
     public static WorldController Instance {
         get; protected set;
@@ -19,14 +20,8 @@ public class WorldController : MonoBehaviour {
     }
     private void Start() {
 
-        installObjectsSprites = new Dictionary<string, Sprite>();
-        Sprite[] sprites = Resources.LoadAll<Sprite>("Images/Furniture");
-        Debug.Log("LOADED RESOURCES:");
+        LoadSprites();
 
-        foreach (Sprite s in sprites) {
-            Debug.Log(s);
-            installObjectsSprites[s.name] = s;
-        }
         if (Instance != null) {
             Debug.Log($"There should never be two worlds!!!");
         }
@@ -51,13 +46,31 @@ public class WorldController : MonoBehaviour {
                 tileGameObject.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
                 tileGameObject.transform.SetParent(this.transform, true);
 
-                tileGameObject.AddComponent<SpriteRenderer>();
+                // Add default SpriteRenderer.
+                // Add default sprite for empty tiles/
+
+                tileGameObject.AddComponent<SpriteRenderer>().sprite = emptySprite;
 
                 tile_data.RegisterTileTypeChangedCallback(OnTileTypeChanged);
             }
         }
 
-        World.RandomizeTiles();
+        // World.RandomizeTiles();
+
+        // Center the camera.
+
+        Camera.main.transform.position = new Vector3(World.Width / 2, World.Height / 2, Camera.main.transform.position.z);
+    }
+
+    private void LoadSprites() {
+        installObjectsSprites = new Dictionary<string, Sprite>();
+        Sprite[] sprites = Resources.LoadAll<Sprite>("Images/Furniture");
+        Debug.Log("LOADED RESOURCES:");
+
+        foreach (Sprite s in sprites) {
+            Debug.Log(s);
+            installObjectsSprites[s.name] = s;
+        }
     }
 
     private void DestroyAllTileGameobjects() {

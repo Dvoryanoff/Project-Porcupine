@@ -1,5 +1,5 @@
-
 using System;
+using Debug = UnityEngine.Debug;
 
 public class Furniture {
     public Tile tile {
@@ -21,6 +21,8 @@ public class Furniture {
 
     Action<Furniture> cbOnChanged;
 
+    Func<Tile, bool> funcPositionValidation;
+
     protected Furniture() {
 
     }
@@ -34,9 +36,17 @@ public class Furniture {
         obj.height = height;
         obj.linksToNeighbour = linkToNeighbour;
 
+        obj.funcPositionValidation = obj.IsValidPosition;
+
         return obj;
     }
     static public Furniture PlaceInstance(Furniture proto, Tile tile) {
+
+        if (proto.funcPositionValidation(tile) == false) {
+            Debug.LogError($"PlaceInstance -- Position validity function returned FALSE!");
+            return null;
+        }
+
         Furniture obj = new Furniture();
 
         obj.objectType = proto.objectType;
@@ -89,6 +99,33 @@ public class Furniture {
 
     public void UnregisterOnChangedCallback(Action<Furniture> callbackFunc) {
         cbOnChanged -= callbackFunc;
+    }
+
+    public bool IsValidPosition(Tile tile) {
+        // Make sure tile is FLOOR.
+
+        if (tile.Type != TileType.Floor) {
+            return false;
+        }
+
+        // Make sure tile doesn't already have furniture.
+
+        if (tile.furniture != null) {
+            return false;
+        }
+
+        return true;
+
+    }
+
+    public bool IsValidPosition_Door(Tile tile) {
+        // Make sure we have a pair of E/W walls or S/N walls.
+
+        if (IsValidPosition(tile) == false) {
+            return false;
+        }
+
+        return true;
     }
 }
 
