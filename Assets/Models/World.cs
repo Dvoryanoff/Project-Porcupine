@@ -22,6 +22,8 @@ public class World {
     Action<Tile> cbTileChanged;
 
     public World(int width = 100, int height = 100) {
+        jobQueue = new Queue<Job>();
+
         Width = width;
         Height = height;
 

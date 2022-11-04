@@ -36,17 +36,13 @@ public class Job {
         jobTime -= workTime;
 
         if (jobTime <= 0) {
-            if (cbJobComplete != null) {
-                cbJobComplete(this);
-            }
+            cbJobComplete?.Invoke(this);
         }
     }
 
     public void CancelJob() {
 
-        if (cbJobCancel != null) {
-            cbJobCancel(this);
-        }
+        cbJobCancel?.Invoke(this);
     }
 }
 
