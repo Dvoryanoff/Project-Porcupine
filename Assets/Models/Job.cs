@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class Job {
 
@@ -6,12 +7,18 @@ public class Job {
     // things like placing furniture, moving stored inventory, 
     // working at a desk and maybe even fighting enemies.
 
-    private Tile tile;
+    public Tile tile {
+        get; protected set;
+    }
+
     private float jobTime = 1f;
 
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
-    public Job(Tile tile, Action<Job> cbJobComplete, Action<Job> cbJobCancel, float jobTime = 1f) {
+
+    public Queue<Job> jobQueue;
+
+    public Job(Tile tile, Action<Job> cbJobComplete, float jobTime = 1f) {
         this.tile = tile;
         this.cbJobComplete += cbJobComplete;
     }

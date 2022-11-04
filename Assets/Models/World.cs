@@ -9,6 +9,8 @@ public class World {
 
     Dictionary<string, Furniture> installedObjectsPrototype;
 
+    public Queue<Job> jobQueue;
+
     public int Width {
         get; protected set;
     }
@@ -66,7 +68,7 @@ public class World {
         return tiles[x, y];
     }
 
-    internal void PlaceInstalledOblect(string objectType, Tile t) {
+    internal void PlaceFurniture(string objectType, Tile t) {
         // TODO: This function assumes 1x1 tile only ----- fix it later
 
         if (installedObjectsPrototype.ContainsKey(objectType) == false) {
