@@ -21,7 +21,7 @@ public class Furniture {
 
     Action<Furniture> cbOnChanged;
 
-    Func<Tile, bool> funcPositionValidation;
+    private Func<Tile, bool> funcPositionValidation;
 
     protected Furniture() {
 
@@ -36,7 +36,7 @@ public class Furniture {
         obj.height = height;
         obj.linksToNeighbour = linkToNeighbour;
 
-        obj.funcPositionValidation = obj.IsValidPosition;
+        obj.funcPositionValidation = obj.__IsValidPosition;
 
         return obj;
     }
@@ -102,6 +102,12 @@ public class Furniture {
     }
 
     public bool IsValidPosition(Tile tile) {
+        return funcPositionValidation(tile);
+    }
+
+    // FIXME: These functions shouldn't be public.
+
+    public bool __IsValidPosition(Tile tile) {
         // Make sure tile is FLOOR.
 
         if (tile.Type != TileType.Floor) {
@@ -118,10 +124,12 @@ public class Furniture {
 
     }
 
-    public bool IsValidPosition_Door(Tile tile) {
+    // FIXME: These functions shouldn't be public.
+
+    public bool __IsValidPosition_Door(Tile tile) {
         // Make sure we have a pair of E/W walls or S/N walls.
 
-        if (IsValidPosition(tile) == false) {
+        if (__IsValidPosition(tile) == false) {
             return false;
         }
 

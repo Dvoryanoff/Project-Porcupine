@@ -7,7 +7,7 @@ public class World {
 
     Tile[,] tiles;
 
-    Dictionary<string, Furniture> installedObjectsPrototype;
+    Dictionary<string, Furniture> furniturePrototypes;
 
     public Queue<Job> jobQueue;
 
@@ -43,9 +43,9 @@ public class World {
     }
 
     protected void CreateInstalledObjectsPrototype() {
-        installedObjectsPrototype = new Dictionary<string, Furniture>();
+        furniturePrototypes = new Dictionary<string, Furniture>();
 
-        installedObjectsPrototype.Add("Wall", Furniture.CreatePrototype("Wall", 0, 1, 1, true));
+        furniturePrototypes.Add("Wall", Furniture.CreatePrototype("Wall", 0, 1, 1, true));
     }
 
     public void RandomizeTiles() {
@@ -73,13 +73,13 @@ public class World {
     internal void PlaceFurniture(string objectType, Tile t) {
         // TODO: This function assumes 1x1 tile only ----- fix it later
 
-        if (installedObjectsPrototype.ContainsKey(objectType) == false) {
+        if (furniturePrototypes.ContainsKey(objectType) == false) {
             Debug.LogError($"installedObjectProrotybe doesn't contains key: {objectType}");
             return;
         }
         Debug.Log("PlaceInstalledOblect");
 
-        Furniture obj = Furniture.PlaceInstance(installedObjectsPrototype[objectType], t);
+        Furniture obj = Furniture.PlaceInstance(furniturePrototypes[objectType], t);
 
         if (obj == null) {
             // Failed to place object -- most likely there was already something there.
@@ -113,5 +113,9 @@ public class World {
             return;
         }
         cbTileChanged(tile);
+    }
+
+    public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
+        return furniturePrototypes[furnitureType].IsValidPosition(tile);
     }
 }

@@ -110,15 +110,34 @@ public class MouseController : MonoBehaviour {
                         if (buildModeIsObjects == true) {
 
                             // FIXME: This instantly build the furniture.
+
+                            // Can we build the furnityre in the selected tile?
+                            // Run the ValidPlacement function.
+
                             string furnitureType = buildModeObjectType;
+                            if (WorldController.Instance.World.IsFurniturePlacementValid(furnitureType, t) &&
+                                t.pendingFurnitureJob == null) {
+                                // This tile position is valid for this furniture!
 
-                            Job j = new(t, (theJob) => {
+                                // Create a job for it to be build.
 
-                                WorldController.Instance.World.PlaceFurniture(furnitureType, theJob.tile);
+                                Job j = new(t, (theJob) => {
 
-                            });
-                            WorldController.Instance.World.jobQueue.Enqueue(j);
-                            Debug.Log($"Sai {WorldController.Instance.World.jobQueue.Count}");
+                                    WorldController.Instance.World.PlaceFurniture(furnitureType, theJob.tile);
+                                    t.pendingFurnitureJob = null;
+                                }
+                                );
+
+                                // Job to queue
+
+                                WorldController.Instance.World.jobQueue.Enqueue(j);
+
+                                // FIXME
+                                t.pendingFurnitureJob = j;
+                                j.RegisterJobCancelCallBack((theJob) => { theJob.tile.pendingFurnitureJob = null; });
+
+                                Debug.Log($"Job queue size {WorldController.Instance.World.jobQueue.Count}");
+                            }
 
                         } else {
                             t.Type = buildModelTile;

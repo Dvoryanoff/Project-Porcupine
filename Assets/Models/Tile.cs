@@ -23,6 +23,8 @@ public class Tile {
 
     Inventory inventory;
 
+    public Job pendingFurnitureJob;
+
     public Furniture furniture {
         get; protected set;
     }
