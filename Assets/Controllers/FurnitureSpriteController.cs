@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class SpriteController : MonoBehaviour {
+public class FurnitureSpriteController : MonoBehaviour {
 
     Dictionary<Tile, GameObject> tileGameobjectMap;
     Dictionary<Furniture, GameObject> furnitureGameobjectMap;
