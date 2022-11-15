@@ -1,19 +1,14 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class FurnitureSpriteController : MonoBehaviour {
 
-    Dictionary<Tile, GameObject> tileGameobjectMap;
     Dictionary<Furniture, GameObject> furnitureGameobjectMap;
     Dictionary<string, Sprite> furnitureSprites;
 
-    [SerializeField] private Sprite floorSprite; // FIXME!
-    [SerializeField] private Sprite emptySprite; // FIXME!
-
     World world {
         get {
-            return WorldController.Instance.World;
+            return WorldController.Instance.world;
         }
     }
 
@@ -25,12 +20,9 @@ public class FurnitureSpriteController : MonoBehaviour {
 
         LoadSprites();
 
-        tileGameobjectMap = new Dictionary<Tile, GameObject>();
         furnitureGameobjectMap = new Dictionary<Furniture, GameObject>();
 
         world.RegisterFurnitureCreated(OnFurnitureCreated);
-        world.RegisterTileChanged(OnTileChanged);
-
     }
 
     private void LoadSprites() {
@@ -41,44 +33,6 @@ public class FurnitureSpriteController : MonoBehaviour {
         foreach (Sprite s in sprites) {
             Debug.Log(s);
             furnitureSprites[s.name] = s;
-        }
-    }
-
-    private void DestroyAllTileGameobjects() {
-        while (tileGameobjectMap.Count > 0) {
-            Tile tile_data = tileGameobjectMap.Keys.First();
-            GameObject tileGameObject = tileGameobjectMap[tile_data];
-
-            tileGameobjectMap.Remove(tile_data);
-
-            tile_data.UnregisterTileTypeChangedCallback(OnTileChanged);
-
-            Destroy(tileGameObject);
-        }
-    }
-
-    // Called whenever tile's data get changed.
-
-    public void OnTileChanged(Tile tile_data) {
-
-        if (tileGameobjectMap.ContainsKey(tile_data) == false) {
-            Debug.LogError($"tileGameobjectMap doesn/t contain tole data!");
-            return;
-        }
-
-        GameObject tile_go = tileGameobjectMap[tile_data];
-
-        if (tile_go == null) {
-            Debug.LogError($"tileGameobjectMap doesn/t contain tole data!");
-            return;
-        }
-
-        if (tile_data.Type == TileType.Floor) {
-            tile_go.GetComponent<SpriteRenderer>().sprite = floorSprite;
-        } else if (tile_data.Type == TileType.Empty) {
-            tile_go.GetComponent<SpriteRenderer>().sprite = null; // FIXME!
-        } else {
-            Debug.LogError("OnTileTypeChanged - Unrecognized tile type.");
         }
     }
 

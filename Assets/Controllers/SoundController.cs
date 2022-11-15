@@ -5,8 +5,8 @@ public class SoundController : MonoBehaviour {
     float soundCoolDown = 0f;
 
     private void Start() {
-        WorldController.Instance.World.RegisterFurnitureCreated(OnFurnitureCreated);
-        WorldController.Instance.World.RegisterTileChanged(OnTileChanged);
+        WorldController.Instance.world.RegisterFurnitureCreated(OnFurnitureCreated);
+        WorldController.Instance.world.RegisterTileChanged(OnTileChanged);
 
     }
 

@@ -6,7 +6,7 @@ public class WorldController : MonoBehaviour {
         get; protected set;
     }
 
-    public World World {
+    public World world {
         get; protected set;
     }
     private void OnEnable() {
@@ -16,11 +16,11 @@ public class WorldController : MonoBehaviour {
         }
         Instance = this;
 
-        World = new World();
+        world = new World();
 
         // Center the camera.
 
-        Camera.main.transform.position = new Vector3(World.Width / 2, World.Height / 2, Camera.main.transform.position.z);
+        Camera.main.transform.position = new Vector3(world.Width / 2, world.Height / 2, Camera.main.transform.position.z);
     }
 
     // Called whenever tile's data get changed.
@@ -29,7 +29,7 @@ public class WorldController : MonoBehaviour {
         int x = Mathf.FloorToInt(coord.x);
         int y = Mathf.FloorToInt(coord.y);
 
-        return World.GetTileAt(x, y);
+        return world.GetTileAt(x, y);
     }
 }
 

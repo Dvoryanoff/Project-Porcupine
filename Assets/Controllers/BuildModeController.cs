@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MouseController : MonoBehaviour {
+public class BuildModeController : MonoBehaviour {
 
     [SerializeField] private GameObject circleCursorPrefab;
     TileType buildModelTile = TileType.Floor;
