@@ -5,11 +5,6 @@ using UnityEngine.EventSystems;
 public class MouseController : MonoBehaviour {
 
     [SerializeField] private GameObject circleCursorPrefab;
-    TileType buildModelTile = TileType.Floor;
-    bool buildModeIsObjects = false;
-
-    //Tile.TileType buildModelTile = Tile.TileType.Floor;
-    string buildModeObjectType;
 
     private Vector3 lastFramePosition;
     private Vector3 dragStartPosition;
@@ -103,75 +98,19 @@ public class MouseController : MonoBehaviour {
         // End Drag
 
         if (Input.GetMouseButtonUp(0)) {
+
+            BuildModeController bmc = GameObject.FindObjectOfType<BuildModeController>();
+
+            // Loop through Tiles.
+
             for (int x = startX; x <= endX; x++) {
                 for (int y = startY; y <= endY; y++) {
                     Tile t = WorldController.Instance.world.GetTileAt(x, y);
                     if (t != null) {
-                        if (buildModeIsObjects == true) {
-
-                            // FIXME: This instantly build the furniture.
-
-                            // Can we build the furnityre in the selected tile?
-                            // Run the ValidPlacement function.
-
-                            string furnitureType = buildModeObjectType;
-                            if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, t) &&
-                                t.pendingFurnitureJob == null) {
-                                // This tile position is valid for this furniture!
-
-                                // Create a job for it to be build.
-
-                                Job j = new(t, (theJob) => {
-
-                                    WorldController.Instance.world.PlaceFurniture(furnitureType, theJob.tile);
-                                    t.pendingFurnitureJob = null;
-                                }
-                                );
-
-                                // Job to queue
-
-                                WorldController.Instance.world.jobQueue.Enqueue(j);
-
-                                // FIXME
-                                t.pendingFurnitureJob = j;
-                                j.RegisterJobCancelCallBack((theJob) => { theJob.tile.pendingFurnitureJob = null; });
-
-                                Debug.Log($"Job queue size {WorldController.Instance.world.jobQueue.Count}");
-                            }
-
-                        } else {
-                            t.Type = buildModelTile;
-                        }
+                        bmc.DoBuild(t);
                     }
                 }
             }
         }
     }
-
-    public void SetMode_BuildFloor() {
-        buildModeIsObjects = false;
-        buildModelTile = TileType.Floor;
-
-    }
-
-    public void SetMode_Bulldoze() {
-        buildModeIsObjects = false;
-        buildModelTile = TileType.Empty;
-    }
-
-    public void SetMode_BuildInstalledObject(string objectType) {
-        buildModeIsObjects = true;
-        buildModeObjectType = objectType;
-    }
 }
-
-//private void UpdateCursor() {
-//    Tile tileUnderMouse = WorldController.Instance.GetTileAtWorldCoord(currentFramePosition);
-
-//    if (tileUnderMouse != null) {
-//        circleCursor.SetActive(true);
-
-//        Vector3 cursorPosition = new Vector3(tileUnderMouse.X, tileUnderMouse.Y, 0);
-//        circleCursor.transform.position = cursorPosition;
-//    } else { circleCursor.SetActive(false); }
-//}
