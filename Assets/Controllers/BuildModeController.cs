@@ -53,7 +53,6 @@ public class BuildModeController : MonoBehaviour {
                 tile.pendingFurnitureJob = j;
                 j.RegisterJobCancelCallBack((theJob) => { theJob.tile.pendingFurnitureJob = null; });
 
-                Debug.Log($"Job queue size {WorldController.Instance.world.jobQueue.Count}");
             }
 
         } else {

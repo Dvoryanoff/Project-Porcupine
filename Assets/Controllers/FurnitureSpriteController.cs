@@ -69,7 +69,7 @@ public class FurnitureSpriteController : MonoBehaviour {
 
     }
 
-    Sprite GetSpriteForFurniture(Furniture obj) {
+    public Sprite GetSpriteForFurniture(Furniture obj) {
         if (obj.linksToNeighbour == false) {
             return furnitureSprites[obj.objectType];
         }

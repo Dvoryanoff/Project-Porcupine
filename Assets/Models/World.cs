@@ -19,9 +19,10 @@ public class World {
     Action<Furniture> cbFurnitureCreated;
     Action<Tile> cbTileChanged;
 
-    public Queue<Job> jobQueue;
+    public JobQueue jobQueue;
+
     public World(int width = 100, int height = 100) {
-        jobQueue = new Queue<Job>();
+        jobQueue = new JobQueue();
 
         Width = width;
         Height = height;
