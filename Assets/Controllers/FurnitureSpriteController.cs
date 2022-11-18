@@ -103,14 +103,25 @@ public class FurnitureSpriteController : MonoBehaviour {
             spriteName += "W";
         }
 
-        //if (furnitureSprites.ContainsKey(spriteName) == false) {
-        //    Debug.LogError($"GetSpritesForInstalledObjects: -- No sprites with name: {spriteName}");
-        //    return null;
-        //}
+        if (furnitureSprites.ContainsKey(spriteName) == false) {
+            Debug.LogError($"GetSpritesForInstalledObjects: -- No sprites with name: {spriteName}");
+            return null;
+        }
 
         return furnitureSprites[spriteName];
 
     }
 
+    public Sprite GetSpriteForFurniture(string objectType) {
+        if (furnitureSprites.ContainsKey(objectType)) {
+            return furnitureSprites[objectType];
+        }
+        if (furnitureSprites.ContainsKey($"{objectType}_")) {
+            return furnitureSprites[$"{objectType}_"];
+        }
+
+        Debug.LogError($"GetSpritesForInstalledObjects: -- No sprites with name: {objectType}");
+        return null;
+    }
 }
 

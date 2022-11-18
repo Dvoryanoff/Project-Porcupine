@@ -13,13 +13,20 @@ public class Job {
 
     private float jobTime = 1f;
 
+    // FIXME:
+
+    public string jobObjectType {
+        get; protected set;
+    }
+
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
 
     public Queue<Job> jobQueue;
 
-    public Job(Tile tile, Action<Job> cbJobComplete, float jobTime = 1f) {
+    public Job(Tile tile, string jobObjectType, Action<Job> cbJobComplete, float jobTime = 1f) {
         this.tile = tile;
+        this.jobObjectType = jobObjectType;
         this.cbJobComplete += cbJobComplete;
     }
 
@@ -30,6 +37,15 @@ public class Job {
     public void RegisterJobCancelCallBack(Action<Job> cb) {
 
         this.cbJobCancel += cb;
+    }
+
+    public void UnRegisterJobCompleteCallBack(Action<Job> cb) {
+
+        this.cbJobCancel -= cb;
+    }
+    public void UnRegisterJobCancelCallBack(Action<Job> cb) {
+
+        this.cbJobCancel -= cb;
     }
 
     public void DoWork(float workTime) {

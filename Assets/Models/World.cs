@@ -118,4 +118,11 @@ public class World {
     public bool IsFurniturePlacementValid(string furnitureType, Tile tile) {
         return furniturePrototypes[furnitureType].IsValidPosition(tile);
     }
+
+    public Furniture GetFurniturePrototype(string objecType) {
+        if (furniturePrototypes.ContainsKey(objecType) == false) {
+            Debug.LogError($"No furniture with type {objecType}");
+        }
+        return furniturePrototypes[objecType];
+    }
 }
