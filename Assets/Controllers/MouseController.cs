@@ -17,7 +17,7 @@ public class MouseController : MonoBehaviour {
 
     private void Start() {
         dragPreviewGameobjects = new List<GameObject>();
-        SimplePool.Preload(circleCursorPrefab, 100);
+        // SimplePool.Preload(circleCursorPrefab, 100);
     }
 
     void Update() {

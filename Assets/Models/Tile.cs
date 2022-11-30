@@ -69,4 +69,15 @@ public class Tile {
 
     }
 
+    public bool IsNeighbour(Tile tile) {
+        if (this.X == tile.X && (this.Y == tile.Y + 1 || this.Y == tile.Y - 1)) {
+            return true;
+        }
+        if (this.Y == tile.X && (this.X == tile.X + 1 || this.X == tile.X - 1)) {
+            return true;
+        }
+        return false;
+
+    }
+
 }
