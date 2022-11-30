@@ -156,6 +156,7 @@ public static class SimplePool {
         GameObject[] obs = new GameObject[qty];
         for (int i = 0; i < qty; i++) {
             obs[i] = Spawn(prefab, Vector3.zero, Quaternion.identity);
+            obs[i].transform.SetParent(obs[i].transform);
         }
 
         // Now despawn them all.

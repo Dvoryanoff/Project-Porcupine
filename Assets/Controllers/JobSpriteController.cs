@@ -35,6 +35,7 @@ public class JobSpriteController : MonoBehaviour {
         SpriteRenderer sr = job_go.AddComponent<SpriteRenderer>();
         sr.sprite = fsc.GetSpriteForFurniture(job.jobObjectType);
         sr.color = new Color(0.5f, 1f, 0.5f, 0.25f);
+        sr.sortingLayerName = "Jobs";
 
         job_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
 

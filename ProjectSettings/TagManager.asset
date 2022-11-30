@@ -41,11 +41,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: GameObjects
-    uniqueID: 4260729017
+  - name: Tiles
+    uniqueID: 2254457873
     locked: 0
-  - name: New Layer 3
-    uniqueID: 2717509599
+  - name: Furniture
+    uniqueID: 1908680629
+    locked: 0
+  - name: Jobs
+    uniqueID: 2350787045
+    locked: 0
+  - name: Characters
+    uniqueID: 1336622789
     locked: 0
   - name: TileUI
     uniqueID: 1245381627

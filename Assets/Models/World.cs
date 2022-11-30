@@ -7,6 +7,8 @@ public class World {
 
     Tile[,] tiles;
 
+    List<Character> characters;
+
     Dictionary<string, Furniture> furniturePrototypes;
 
     public int Width {
@@ -17,6 +19,7 @@ public class World {
         get; protected set;
     }
     Action<Furniture> cbFurnitureCreated;
+    Action<Character> cbCharacterCreated;
     Action<Tile> cbTileChanged;
 
     public JobQueue jobQueue;
@@ -39,7 +42,15 @@ public class World {
         Debug.Log("World created with " + (Width * Height) + " tiles.");
 
         CreateInstalledObjectsPrototype();
+        characters = new List<Character>();
 
+    }
+
+    public void CreateCharacter(Tile t) {
+        Character c = new Character(t);
+        if (cbCharacterCreated != null) {
+            cbCharacterCreated(c);
+        }
     }
 
     protected void CreateInstalledObjectsPrototype() {
@@ -98,6 +109,14 @@ public class World {
 
     public void UnRegisterFurnitureCreated(Action<Furniture> callbackFunc) {
         cbFurnitureCreated -= callbackFunc;
+    }
+
+    public void RegisterCharacterCreated(Action<Character> callbackFunc) {
+        cbCharacterCreated += callbackFunc;
+    }
+
+    public void UnRegisterCharacterCreated(Action<Character> callbackFunc) {
+        cbCharacterCreated -= callbackFunc;
     }
 
     public void RegisterTileChanged(Action<Tile> callbackFunc) {
