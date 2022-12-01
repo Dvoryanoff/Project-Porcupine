@@ -34,10 +34,16 @@ public class Character {
 
         // Do i have a job?
         if (myJob == null) {
+            // Grab a new job
             myJob = currentTile.world.jobQueue.Dequeue();
 
             if (myJob != null) {
+
+                // We have a job
                 destTile = myJob.tile;
+
+                myJob.RegisterJobCompleteCallBack(OnJobEnded);
+                myJob.RegisterJobCancelCallBack(OnJobEnded);
             }
         }
 
@@ -88,5 +94,14 @@ public class Character {
 
     public void UnregisterOnChangedCallback(Action<Character> cb) {
         cbCharacterChanged -= cb;
+    }
+
+    void OnJobEnded(Job j) {
+        if (j != myJob) {
+            Debug.LogError("Character being told about job that isn't his. You forgot to Unregister smth.");
+            return;
+        }
+
+        myJob = null;
     }
 }

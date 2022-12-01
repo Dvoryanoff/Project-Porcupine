@@ -32,7 +32,7 @@ public class Job {
 
     public void RegisterJobCompleteCallBack(Action<Job> cb) {
 
-        this.cbJobCancel += cb;
+        this.cbJobComplete += cb;
     }
     public void RegisterJobCancelCallBack(Action<Job> cb) {
 
@@ -41,7 +41,7 @@ public class Job {
 
     public void UnRegisterJobCompleteCallBack(Action<Job> cb) {
 
-        this.cbJobCancel -= cb;
+        this.cbJobComplete -= cb;
     }
     public void UnRegisterJobCancelCallBack(Action<Job> cb) {
 
