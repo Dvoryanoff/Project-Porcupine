@@ -21,7 +21,7 @@ public class CharacterSpriteController : MonoBehaviour {
         // DEBUG
         Character c = world.CreateCharacter(world.GetTileAt(world.Width / 2, world.Height / 2));
 
-        c.SetDestination(world.GetTileAt(world.Width / 2 + 5, world.Height / 2));
+        // c.SetDestination(world.GetTileAt(world.Width / 2 + 5, world.Height / 2));
 
     }
 
@@ -38,7 +38,7 @@ public class CharacterSpriteController : MonoBehaviour {
 
     public void OnCharacterCreated(Character character) {
 
-        Debug.Log("OnCharactertCreated");
+        // Debug.Log("OnCharactertCreated");
 
         // Create a visual Game Object linked to this data.
 

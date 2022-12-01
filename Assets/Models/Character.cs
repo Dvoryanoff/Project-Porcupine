@@ -21,6 +21,8 @@ public class Character {
     float movementPercentage; // Gos from 0 to 1.
     float speed = 2f;         //  TileSpriteController per second;
 
+    Job myJob;
+
     Action<Character> cbCharacterChanged;
     public Character(Tile tile) {
         currentTile = destTile = tile;
@@ -28,10 +30,23 @@ public class Character {
 
     public void Update(float deltaTime) {
 
-        Debug.Log("Character Update");
+        // Debug.Log("Character Update");
+
+        // Do i have a job?
+        if (myJob == null) {
+            myJob = currentTile.world.jobQueue.Dequeue();
+
+            if (myJob != null) {
+                destTile = myJob.tile;
+            }
+        }
 
         // Are we there yet?
         if (currentTile == destTile) {
+
+            if (myJob != null) {
+                myJob.DoWork(deltaTime);
+            }
             return;
         }
 
