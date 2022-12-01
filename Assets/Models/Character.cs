@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Character {
@@ -20,11 +21,14 @@ public class Character {
     float movementPercentage; // Gos from 0 to 1.
     float speed = 2f;         //  TileSpriteController per second;
 
+    Action<Character> cbCharacterChanged;
     public Character(Tile tile) {
         currentTile = destTile = tile;
     }
 
-    private void Update(float deltaTime) {
+    public void Update(float deltaTime) {
+
+        Debug.Log("Character Update");
 
         // Are we there yet?
         if (currentTile == destTile) {
@@ -52,12 +56,22 @@ public class Character {
             // FIXME: Do we really want to retain any overshot movement?
         }
 
+        if (cbCharacterChanged != null) {
+            cbCharacterChanged(this);
+        }
     }
     public void SetDestination(Tile tile) {
         if (currentTile.IsNeighbour(tile) == false) {
             Debug.Log("Character :: SetDestination -- Our destination tile isn't actually our neighbour.");
         }
         destTile = tile;
+    }
 
+    public void RegisteOnChangedCallback(Action<Character> cb) {
+        cbCharacterChanged += cb;
+    }
+
+    public void UnregisterOnChangedCallback(Action<Character> cb) {
+        cbCharacterChanged -= cb;
     }
 }

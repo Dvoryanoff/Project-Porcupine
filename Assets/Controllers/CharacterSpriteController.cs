@@ -19,7 +19,9 @@ public class CharacterSpriteController : MonoBehaviour {
         world.RegisterCharacterCreated(OnCharacterCreated);
 
         // DEBUG
-        world.CreateCharacter(world.GetTileAt(world.Width / 2, world.Height / 2));
+        Character c = world.CreateCharacter(world.GetTileAt(world.Width / 2, world.Height / 2));
+
+        c.SetDestination(world.GetTileAt(world.Width / 2 + 5, world.Height / 2));
 
     }
 
@@ -45,7 +47,7 @@ public class CharacterSpriteController : MonoBehaviour {
         characterGameobjectMap.Add(character, char_go);
 
         char_go.name = "Character";
-        char_go.transform.position = new Vector3(character.currentTile.X, character.currentTile.Y, 0);
+        char_go.transform.position = new Vector3(character.X, character.Y, 0);
         char_go.transform.SetParent(this.transform, true);
 
         SpriteRenderer sr = char_go.AddComponent<SpriteRenderer>();
@@ -53,20 +55,22 @@ public class CharacterSpriteController : MonoBehaviour {
         sr.sortingLayerName = "Characters";
         char_go.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-        // character.RegisterOnChangedCallback(OnFurnitureChange);
+        character.RegisteOnChangedCallback(OnCharacterChange);
     }
 
-    // private void OnFurnitureChange(Furniture furn) {
-    // 
-    //     // Make sure that furnityre graphics are corrrect.
-    // 
-    //     if (characterGameobjectMap.ContainsKey(furn) == false) {
-    //         return;
-    //     }
-    // 
-    //     GameObject furn_go = characterGameobjectMap[furn];
-    //     furn_go.GetComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-    // 
-    // }
+    private void OnCharacterChange(Character character) {
+
+        // Make sure that furnityre graphics are corrrect.
+
+        if (characterGameobjectMap.ContainsKey(character) == false) {
+            Debug.LogError("OnCharacterChanged -- trying to change visuals for character not in our map.");
+            return;
+        }
+
+        GameObject char_go = characterGameobjectMap[character];
+
+        char_go.transform.position = new Vector3(character.X, character.Y, 0);
+
+    }
 
 }

@@ -62,6 +62,7 @@ public class FurnitureSpriteController : MonoBehaviour {
         // Make sure that furnityre graphics are corrrect.
 
         if (furnitureGameobjectMap.ContainsKey(furn) == false) {
+            Debug.LogError("OnFurnitureChanged -- trying to change visuals for furniture not in our map.");
             return;
         }
 
