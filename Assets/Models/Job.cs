@@ -11,7 +11,7 @@ public class Job {
         get; protected set;
     }
 
-    private float jobTime = 1f;
+    private float jobTime;
 
     // FIXME:
 
@@ -28,6 +28,7 @@ public class Job {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
         this.cbJobComplete += cbJobComplete;
+        this.jobTime = jobTime;
     }
 
     public void RegisterJobCompleteCallBack(Action<Job> cb) {

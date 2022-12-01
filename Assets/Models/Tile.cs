@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public enum TileType { Empty, Floor };
@@ -69,24 +70,33 @@ public class Tile {
 
     }
 
-    public bool IsNeighbour(Tile tile, bool isDiagOk = false) {
-        if (this.X == tile.X && (this.Y == tile.Y + 1 || this.Y == tile.Y - 1)) {
-            return true;
-        }
-        if (this.Y == tile.X && (this.X == tile.X + 1 || this.X == tile.X - 1)) {
-            return true;
-        }
+    public bool IsNeighbour(Tile tile, bool diagOkay = false) {
 
-        if (isDiagOk) {
-            if (this.X == tile.X + 1 && (this.Y == tile.Y + 1 || this.Y == tile.Y - 1)) {
-                return true;
-            }
-            if (this.X == tile.X - 1 && (this.Y == tile.Y + 1 || this.Y == tile.Y - 1)) {
-                return true;
-            }
-        }
-        return false;
+        // Check to see if we have a difference of exactly ONE between the two
+        // tile coordinates.  Is so, then we are vertical or horizontal neighbours.
+        return
+            Mathf.Abs(this.X - tile.X) + Mathf.Abs(this.Y - tile.Y) == 1 ||  // Check hori/vert adjacency
+            (diagOkay && (Mathf.Abs(this.X - tile.X) == 1 && Mathf.Abs(this.Y - tile.Y) == 1)) // Check diag adjacency
+            ;
 
+        /*		// First, are we on the same X column?  If so, see if we differ
+				// in our Y by exactly one.
+				if(this.X == tile.X && ( Mathf.Abs( this.Y - tile.Y ) == 1 ) )
+					return true;
+
+				// Now check on the same Y row...
+				if(this.Y == tile.Y && ( Mathf.Abs( this.X - tile.X ) == 1 ) )
+					return true;
+
+				if(diagOkay) {
+					if(this.X == tile.X+1 && (this.Y == tile.Y+1 || this.Y == tile.Y-1 ))
+						return true;
+					if(this.X == tile.X-1 && (this.Y == tile.Y+1 || this.Y == tile.Y-1 ))
+						return true;
+				}
+
+				return false;
+		*/
     }
 
 }
