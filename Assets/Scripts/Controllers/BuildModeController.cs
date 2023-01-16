@@ -7,22 +7,26 @@ public class BuildModeController : MonoBehaviour {
 
     string buildModeObjectType;
 
-    public void SetMode_BuildFloor() {
+    public void SetMode_BuildFloor () {
         buildModeIsObjects = false;
         buildModelTile = TileType.Floor;
     }
 
-    public void SetMode_Bulldoze() {
+    public void SetMode_Bulldoze () {
         buildModeIsObjects = false;
         buildModelTile = TileType.Empty;
     }
 
-    public void SetMode_BuildFurniture(string objectType) {
+    public void SetMode_BuildFurniture (string objectType) {
         buildModeIsObjects = true;
         buildModeObjectType = objectType;
     }
 
-    public void DoBuild(Tile tile) {
+    public void DoPathfindingTest () {
+        WorldController.Instance.world.SetupPathfindingExample ();
+    }
+
+    public void DoBuild (Tile tile) {
         // Tile t = WorldController.Instance.world.GetTileAt(x, y);
         if (buildModeIsObjects == true) {
 
@@ -32,26 +36,26 @@ public class BuildModeController : MonoBehaviour {
             // Run the ValidPlacement function.
 
             string furnitureType = buildModeObjectType;
-            if (WorldController.Instance.world.IsFurniturePlacementValid(furnitureType, tile) &&
+            if (WorldController.Instance.world.IsFurniturePlacementValid (furnitureType, tile) &&
                 tile.pendingFurnitureJob == null) {
                 // This tile position is valid for this furniture!
 
                 // Create a job for it to be build.
 
-                Job j = new(tile, furnitureType, (theJob) => {
+                Job j = new (tile, furnitureType, (theJob) => {
 
-                    WorldController.Instance.world.PlaceFurniture(furnitureType, theJob.tile);
+                    WorldController.Instance.world.PlaceFurniture (furnitureType, theJob.tile);
                     tile.pendingFurnitureJob = null;
                 }
                 );
 
                 // Job to queue
 
-                WorldController.Instance.world.jobQueue.Enqueue(j);
+                WorldController.Instance.world.jobQueue.Enqueue (j);
 
                 // FIXME
                 tile.pendingFurnitureJob = j;
-                j.RegisterJobCancelCallBack((theJob) => { theJob.tile.pendingFurnitureJob = null; });
+                j.RegisterJobCancelCallBack ((theJob) => { theJob.tile.pendingFurnitureJob = null; });
 
             }
 
