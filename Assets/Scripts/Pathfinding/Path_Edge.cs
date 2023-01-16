@@ -1,13 +1,7 @@
-using UnityEngine;
+public class Path_Edge<T> {
 
-public class Path_Edge : MonoBehaviour {
-    // Start is called before the first frame update
-    void Start () {
+    public float cost; // Cost to ENTER the Tile!
 
-    }
+    public Path_Node<T>[] nodes;
 
-    // Update is called once per frame
-    void Update () {
-
-    }
 }

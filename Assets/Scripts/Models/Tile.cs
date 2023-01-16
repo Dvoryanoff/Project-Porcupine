@@ -40,6 +40,18 @@ public class Tile {
         get; protected set;
     }
 
+    public float movementCost {
+        get {
+            if (Type == TileType.Empty)
+                return 0; // 0 is Unwalkable.
+            if (furniture == null)
+                return 1; // Normal cost.
+
+            return 1 * furniture.movementCost;
+
+        }
+    }
+
     public Tile (World world, int x, int y) {
         this.world = world;
         this.X = x;

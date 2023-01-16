@@ -1,18 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+public class Path_Node<T> {
 
-public class Path_Node : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public T data;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public Path_Edge<T>[] edges; // Nodes leading out from this node.
+
 }

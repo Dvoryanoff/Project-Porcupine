@@ -8,7 +8,7 @@ public class Furniture {
     public string objectType {
         get; protected set;
     }
-    private float movementCost = 1f;
+    public float movementCost { get; protected set; } = 1f;
     private int width;
     private int height;
 
@@ -23,12 +23,12 @@ public class Furniture {
 
     private Func<Tile, bool> funcPositionValidation;
 
-    protected Furniture() {
+    protected Furniture () {
 
     }
 
-    static public Furniture CreatePrototype(string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linkToNeighbour = false) {
-        Furniture obj = new Furniture();
+    static public Furniture CreatePrototype (string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linkToNeighbour = false) {
+        Furniture obj = new Furniture ();
 
         obj.objectType = objectType;
         obj.movementCost = movementCost;
@@ -40,14 +40,14 @@ public class Furniture {
 
         return obj;
     }
-    static public Furniture PlaceInstance(Furniture proto, Tile tile) {
+    static public Furniture PlaceInstance (Furniture proto, Tile tile) {
 
-        if (proto.funcPositionValidation(tile) == false) {
-            Debug.LogError($"PlaceInstance -- Position validity function returned FALSE!");
+        if (proto.funcPositionValidation (tile) == false) {
+            Debug.LogError ($"PlaceInstance -- Position validity function returned FALSE!");
             return null;
         }
 
-        Furniture obj = new Furniture();
+        Furniture obj = new Furniture ();
 
         obj.objectType = proto.objectType;
         obj.movementCost = proto.movementCost;
@@ -56,7 +56,7 @@ public class Furniture {
         obj.linksToNeighbour = proto.linksToNeighbour;
 
         obj.tile = tile;
-        if (tile.PlaceFurniture(obj) == false) {
+        if (tile.PlaceFurniture (obj) == false) {
             return null;
         };
         if (obj.linksToNeighbour) {
@@ -69,45 +69,45 @@ public class Furniture {
             int x = obj.tile.X;
             int y = obj.tile.Y;
 
-            t = tile.world.GetTileAt(x, y + 1);
+            t = tile.world.GetTileAt (x, y + 1);
             if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
-                t.furniture.cbOnChanged(t.furniture);
+                t.furniture.cbOnChanged (t.furniture);
             }
 
-            t = tile.world.GetTileAt(x + 1, y);
+            t = tile.world.GetTileAt (x + 1, y);
             if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
-                t.furniture.cbOnChanged(t.furniture);
+                t.furniture.cbOnChanged (t.furniture);
             }
 
-            t = tile.world.GetTileAt(x, y - 1);
+            t = tile.world.GetTileAt (x, y - 1);
             if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
-                t.furniture.cbOnChanged(t.furniture);
+                t.furniture.cbOnChanged (t.furniture);
             }
 
-            t = tile.world.GetTileAt(x - 1, y);
+            t = tile.world.GetTileAt (x - 1, y);
             if (t != null && t.furniture != null && t.furniture.objectType == obj.objectType) {
-                t.furniture.cbOnChanged(t.furniture);
+                t.furniture.cbOnChanged (t.furniture);
             }
         }
 
         return obj;
     }
 
-    public void RegisterOnChangedCallback(Action<Furniture> callbackFunc) {
+    public void RegisterOnChangedCallback (Action<Furniture> callbackFunc) {
         cbOnChanged += callbackFunc;
     }
 
-    public void UnregisterOnChangedCallback(Action<Furniture> callbackFunc) {
+    public void UnregisterOnChangedCallback (Action<Furniture> callbackFunc) {
         cbOnChanged -= callbackFunc;
     }
 
-    public bool IsValidPosition(Tile tile) {
-        return funcPositionValidation(tile);
+    public bool IsValidPosition (Tile tile) {
+        return funcPositionValidation (tile);
     }
 
     // FIXME: These functions shouldn't be public.
 
-    public bool __IsValidPosition(Tile tile) {
+    public bool __IsValidPosition (Tile tile) {
         // Make sure tile is FLOOR.
 
         if (tile.Type != TileType.Floor) {
@@ -126,10 +126,10 @@ public class Furniture {
 
     // FIXME: These functions shouldn't be public.
 
-    public bool __IsValidPosition_Door(Tile tile) {
+    public bool __IsValidPosition_Door (Tile tile) {
         // Make sure we have a pair of E/W walls or S/N walls.
 
-        if (__IsValidPosition(tile) == false) {
+        if (__IsValidPosition (tile) == false) {
             return false;
         }
 
