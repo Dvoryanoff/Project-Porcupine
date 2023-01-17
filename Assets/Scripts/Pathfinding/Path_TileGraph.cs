@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Debug = UnityEngine.Debug;
 
 public class Path_TileGraph {
 
@@ -8,6 +9,8 @@ public class Path_TileGraph {
 
     Dictionary<Tile, Path_Node<Tile>> nodes;
     public Path_TileGraph (World world) {
+
+        Debug.Log ("PathTileGraph");
 
         // Loop through all tiles of the world.
 
@@ -31,15 +34,42 @@ public class Path_TileGraph {
             }
         }
 
+        Debug.Log ($"PathTileGraph: created {nodes.Count} nodes!");
+
+        int edgeCount = 0;
+
         foreach (Tile t in nodes.Keys) {
 
             // Get a list of neighbours for the tile.
+            Path_Node<Tile> n = nodes[t];
+
+            List<Path_Edge<Tile>> edges = new List<Path_Edge<Tile>> ();
+
+            Tile[] neighbours = t.GetNeighbours (true);
             // if neighbours is walkable, create an edge to the relevant node.
 
+            for (int i = 0; i < neighbours.Length; i++) {
+                if (neighbours[i] != null && neighbours[i].movementCost > 0) {
+                    // This neighbour exist and is walkable, co create an edge.
+
+                    Path_Edge<Tile> e = new Path_Edge<Tile> ();
+                    e.cost = neighbours[i].movementCost;
+                    e.node = nodes[key: neighbours[i]];
+
+                    edges.Add (e);
+                    edgeCount++;
+
+                }
+
+                n.edges = edges.ToArray ();
+
+            }
+
+            // Now loop though all nodes again.
+            // Create enges for neighbours.
+
         }
-
-        // Now loop though all nodes again.
-        // Create enges for neighbours.
-
+        Debug.Log ($"PathTileGraph: created {edgeCount} edges!");
     }
 }
+

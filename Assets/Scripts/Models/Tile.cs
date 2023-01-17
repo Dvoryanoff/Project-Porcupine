@@ -88,27 +88,43 @@ public class Tile {
         // tile coordinates.  Is so, then we are vertical or horizontal neighbours.
         return
             Mathf.Abs (this.X - tile.X) + Mathf.Abs (this.Y - tile.Y) == 1 ||  // Check hori/vert adjacency
-            (diagOkay && (Mathf.Abs (this.X - tile.X) == 1 && Mathf.Abs (this.Y - tile.Y) == 1)) // Check diag adjacency
-            ;
-
-        /*		// First, are we on the same X column?  If so, see if we differ
-				// in our Y by exactly one.
-				if(this.X == tile.X && ( Mathf.Abs( this.Y - tile.Y ) == 1 ) )
-					return true;
-
-				// Now check on the same Y row...
-				if(this.Y == tile.Y && ( Mathf.Abs( this.X - tile.X ) == 1 ) )
-					return true;
-
-				if(diagOkay) {
-					if(this.X == tile.X+1 && (this.Y == tile.Y+1 || this.Y == tile.Y-1 ))
-						return true;
-					if(this.X == tile.X-1 && (this.Y == tile.Y+1 || this.Y == tile.Y-1 ))
-						return true;
-				}
-
-				return false;
-		*/
+            (diagOkay && (Mathf.Abs (this.X - tile.X) == 1 && Mathf.Abs (this.Y - tile.Y) == 1)); // Check diag adjacency
     }
 
+    public Tile[] GetNeighbours (bool diagOkay = false) {
+
+        Tile[] neighbours;
+
+        if (diagOkay == false) {
+            neighbours = new Tile[4]; // Tile order: N E S W 
+        } else {
+            neighbours = new Tile[8]; // Tile order: N E S W NE SE SW NW
+
+        }
+
+        Tile n;
+
+        n = world.GetTileAt (X, Y + 1);// Can be null but thats okay.
+        neighbours[0] = n;
+        n = world.GetTileAt (X + 1, Y);// Can be null but thats okay.
+        neighbours[1] = n;
+        n = world.GetTileAt (X, Y - 1);// Can be null but thats okay.
+        neighbours[2] = n;
+        n = world.GetTileAt (X - 1, Y);// Can be null but thats okay.
+        neighbours[3] = n;
+
+        if (diagOkay) {
+            n = world.GetTileAt (X + 1, Y + 1);// Can be null but thats okay.
+            neighbours[4] = n;
+            n = world.GetTileAt (X + 1, Y - 1);// Can be null but thats okay.
+            neighbours[5] = n;
+            n = world.GetTileAt (X - 1, Y - 1);// Can be null but thats okay.
+            neighbours[6] = n;
+            n = world.GetTileAt (X + 1, Y + 1);// Can be null but thats okay.
+            neighbours[7] = n;
+        }
+
+        return neighbours;
+
+    }
 }

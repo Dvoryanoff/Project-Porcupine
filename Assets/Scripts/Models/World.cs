@@ -9,6 +9,10 @@ public class World {
 
     List<Character> characters;
 
+    // The pathfinfing graph used to navigate our world map.
+
+    Path_TileGraph tileGraph;
+
     Dictionary<string, Furniture> furniturePrototypes;
 
     public int Width {
@@ -132,6 +136,7 @@ public class World {
 
         if (cbFurnitureCreated != null) {
             cbFurnitureCreated (obj);
+            InvalidateTileGraph ();
         }
 
     }
@@ -160,13 +165,22 @@ public class World {
         cbTileChanged -= callbackFunc;
     }
 
-    public void OnTileChanged (Tile tile) {
+    public void OnTileChanged (Tile tile) { //Gets Called whenever ANY tile changed.
         if (tile == null) {
             return;
         }
         cbTileChanged (tile);
+        InvalidateTileGraph ();
     }
 
+    // This should be called whenever a change to the world
+    // means that our old pathfinding into is invalid.
+
+    public void InvalidateTileGraph () {
+        tileGraph = null;
+        // Path_TileGraph tileGraph = new Path_TileGraph (WorldController.Instance.world);
+
+    }
     public bool IsFurniturePlacementValid (string furnitureType, Tile tile) {
         return furniturePrototypes[furnitureType].IsValidPosition (tile);
     }
