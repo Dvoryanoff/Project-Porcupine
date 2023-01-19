@@ -11,7 +11,7 @@ public class World {
 
     // The pathfinfing graph used to navigate our world map.
 
-    Path_TileGraph tileGraph;
+    public Path_TileGraph tileGraph;
 
     Dictionary<string, Furniture> furniturePrototypes;
 

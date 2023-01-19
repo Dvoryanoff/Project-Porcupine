@@ -7,7 +7,7 @@ public class Path_TileGraph {
     // on our World.
     // Each Tile is a Node.  Each WACKABLE neighbour from a Tile is Linkedvia an Edge connection.
 
-    Dictionary<Tile, Path_Node<Tile>> nodes;
+    public Dictionary<Tile, Path_Node<Tile>> nodes;
     public Path_TileGraph (World world) {
 
         Debug.Log ("PathTileGraph");
