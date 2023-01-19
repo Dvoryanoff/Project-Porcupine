@@ -6,18 +6,17 @@ using Debug = UnityEngine.Debug;
 
 public class Path_AStar {
 
+    float diagDist = Mathf.Sqrt (2);
+
     Queue<Tile> path;
     public Path_AStar (World world, Tile tileStart, Tile tileEnd) {
-
-        Dictionary<Tile, Path_Node<Tile>> nodes = world.tileGraph.nodes;
-
-        Path_Node<Tile> start = nodes[tileStart];
-        Path_Node<Tile> goal = nodes[tileEnd];
 
         // Check to see if we have a valid tileGraph.
         if (world.tileGraph == null) {
             world.tileGraph = new Path_TileGraph (world);
         }
+
+        Dictionary<Tile, Path_Node<Tile>> nodes = world.tileGraph.nodes;
 
         // Dictionary of all valid, walckable nodes.
         if (nodes.ContainsKey (tileStart) == false) {
@@ -31,6 +30,8 @@ public class Path_AStar {
             return;
         }
 
+        Path_Node<Tile> start = nodes[tileStart];
+        Path_Node<Tile> goal = nodes[tileEnd];
         // Mostly following this pseudocode:
         // https://en.wikipedia.org/wiki/A*_search_algorithm
 
@@ -117,7 +118,7 @@ public class Path_AStar {
         }
 
         if (Mathf.Abs (a.data.X - b.data.X) == 1 && Mathf.Abs (a.data.Y - b.data.Y) == 1) {
-            return Mathf.Sqrt (2);
+            return diagDist;
         }
 
         return Mathf.Sqrt (
@@ -154,7 +155,14 @@ public class Path_AStar {
 
     }
 
-    public Tile GetNextTile () {
+    public Tile Dequeue () {
         return path.Dequeue ();
+    }
+
+    public int Length () {
+        if (path == null) {
+            return 0;
+        }
+        return path.Count;
     }
 }

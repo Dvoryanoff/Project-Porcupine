@@ -166,9 +166,9 @@ public class World {
     }
 
     public void OnTileChanged (Tile tile) { //Gets Called whenever ANY tile changed.
-        if (tile == null) {
+        if (cbTileChanged == null)
             return;
-        }
+
         cbTileChanged (tile);
         InvalidateTileGraph ();
     }

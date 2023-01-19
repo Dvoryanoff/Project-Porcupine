@@ -24,42 +24,42 @@ public class Job {
 
     public Queue<Job> jobQueue;
 
-    public Job(Tile tile, string jobObjectType, Action<Job> cbJobComplete, float jobTime = 1f) {
+    public Job (Tile tile, string jobObjectType, Action<Job> cbJobComplete, float jobTime = 0.1f) {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
         this.cbJobComplete += cbJobComplete;
         this.jobTime = jobTime;
     }
 
-    public void RegisterJobCompleteCallBack(Action<Job> cb) {
+    public void RegisterJobCompleteCallback (Action<Job> cb) {
 
         this.cbJobComplete += cb;
     }
-    public void RegisterJobCancelCallBack(Action<Job> cb) {
+    public void RegisterJobCancelCallback (Action<Job> cb) {
 
         this.cbJobCancel += cb;
     }
 
-    public void UnRegisterJobCompleteCallBack(Action<Job> cb) {
+    public void UnRegisterJobCompleteCallBack (Action<Job> cb) {
 
         this.cbJobComplete -= cb;
     }
-    public void UnRegisterJobCancelCallBack(Action<Job> cb) {
+    public void UnRegisterJobCancelCallBack (Action<Job> cb) {
 
         this.cbJobCancel -= cb;
     }
 
-    public void DoWork(float workTime) {
+    public void DoWork (float workTime) {
         jobTime -= workTime;
 
         if (jobTime <= 0) {
-            cbJobComplete?.Invoke(this);
+            cbJobComplete?.Invoke (this);
         }
     }
 
-    public void CancelJob() {
+    public void CancelJob () {
 
-        cbJobCancel?.Invoke(this);
+        cbJobCancel?.Invoke (this);
     }
 }
 

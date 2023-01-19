@@ -55,7 +55,7 @@ public class BuildModeController : MonoBehaviour {
 
                 // FIXME
                 tile.pendingFurnitureJob = j;
-                j.RegisterJobCancelCallBack ((theJob) => { theJob.tile.pendingFurnitureJob = null; });
+                j.RegisterJobCancelCallback ((theJob) => { theJob.tile.pendingFurnitureJob = null; });
 
             }
 
