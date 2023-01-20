@@ -90,8 +90,8 @@ public class Character {
 
         // Whats the total distance from A to B?
         float distToTravel = Mathf.Sqrt (
-            Mathf.Pow (currTile.X - destTile.X, 2) +
-            Mathf.Pow (currTile.Y - destTile.Y, 2));
+            Mathf.Pow (currTile.X - nextTile.X, 2) +
+            Mathf.Pow (currTile.Y - nextTile.Y, 2));
 
         // How much distance can travel this Update?
         float distThisFrame = speed * deltaTime;
@@ -129,7 +129,7 @@ public class Character {
 
     }
     public void SetDestination (Tile tile) {
-        if (currTile.IsNeighbour (tile) == false) {
+        if (currTile.IsNeighbour (tile, true) == false) {
             Debug.Log ("Character :: SetDestination -- Our destination tile isn't actually our neighbour.");
         }
         destTile = tile;
