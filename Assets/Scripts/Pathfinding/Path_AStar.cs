@@ -125,7 +125,6 @@ public class Path_AStar {
             Mathf.Pow (a.data.X - b.data.X, 2) +
             Mathf.Pow (a.data.Y - b.data.Y, 2)
             );
-
     }
 
     void ReconstructPath (

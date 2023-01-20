@@ -5,16 +5,16 @@ public class Character {
 
     public float X {
         get {
-            return Mathf.Lerp (currentTile.X, nextTile.X, movementPercentage);
+            return Mathf.Lerp (currTile.X, nextTile.X, movementPercentage);
         }
     }
     public float Y {
         get {
-            return Mathf.Lerp (currentTile.Y, nextTile.Y, movementPercentage);
+            return Mathf.Lerp (currTile.Y, nextTile.Y, movementPercentage);
         }
     }
 
-    public Tile currentTile {
+    public Tile currTile {
         get; protected set;
     }
     Tile destTile;            // If we are not moving then destTile == currentTile.
@@ -22,12 +22,12 @@ public class Character {
     Path_AStar pathAStar;
 
     float movementPercentage; // Gos from 0 to 1.
-    float speed = 2f;         //  TileSpriteController per second;
+    float speed = 5f;         //  TileSpriteController per second;
 
     Action<Character> cbCharacterChanged;
     Job myJob;
     public Character (Tile tile) {
-        currentTile = destTile = nextTile = tile;
+        currTile = destTile = nextTile = tile;
     }
 
     public void Update_DoJob (float deltaTime) {
@@ -36,7 +36,7 @@ public class Character {
         // Do i have a job?
         if (myJob == null) {
             // Grab a new job
-            myJob = currentTile.world.jobQueue.Dequeue ();
+            myJob = currTile.world.jobQueue.Dequeue ();
 
             if (myJob != null) {
 
@@ -49,7 +49,7 @@ public class Character {
         }
 
         // Are we there yet?
-        if (currentTile == destTile) {
+        if (myJob != null && currTile == myJob.tile) {
 
             if (myJob != null) {
                 myJob.DoWork (deltaTime);
@@ -61,16 +61,16 @@ public class Character {
 
     public void Update_DoMovement (float deltaTime) {
 
-        if (currentTile == destTile) {
+        if (currTile == destTile) {
             return; // We're already where we want to be.
         }
 
-        if (nextTile == null || nextTile == currentTile) {
+        if (nextTile == null || nextTile == currTile) {
 
             // Get the next tile from the pathfinding system.
 
             if (pathAStar == null || pathAStar.Length () == 0) {
-                pathAStar = new Path_AStar (currentTile.world, currentTile, destTile); // This will calculate path from curr to dest.
+                pathAStar = new Path_AStar (currTile.world, currTile, destTile); // This will calculate path from curr to dest.
                 if (pathAStar.Length () == 0) {
                     Debug.LogError ($"Path_AStar returned no path to destination!");
                     // FIXME: Job should maybe be re-enqued instead?
@@ -90,8 +90,8 @@ public class Character {
 
         // Whats the total distance from A to B?
         float distToTravel = Mathf.Sqrt (
-            Mathf.Pow (currentTile.X - destTile.X, 2) +
-            Mathf.Pow (currentTile.Y - destTile.Y, 2));
+            Mathf.Pow (currTile.X - destTile.X, 2) +
+            Mathf.Pow (currTile.Y - destTile.Y, 2));
 
         // How much distance can travel this Update?
         float distThisFrame = speed * deltaTime;
@@ -109,7 +109,7 @@ public class Character {
             // TODO: Get the next tile from the pathfinding system.
             //       If the are no more tiles, we have TRULY reached the destination.
 
-            currentTile = nextTile;
+            currTile = nextTile;
             movementPercentage = 0;
 
             // FIXME: Do we really want to retain any overshot movement?
@@ -129,7 +129,7 @@ public class Character {
 
     }
     public void SetDestination (Tile tile) {
-        if (currentTile.IsNeighbour (tile) == false) {
+        if (currTile.IsNeighbour (tile) == false) {
             Debug.Log ("Character :: SetDestination -- Our destination tile isn't actually our neighbour.");
         }
         destTile = tile;
