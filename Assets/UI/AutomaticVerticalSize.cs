@@ -5,18 +5,18 @@ public class AutomaticVerticalSize : MonoBehaviour {
 
     [SerializeField] private float childHeight = 28f;
 
-    private void Start() {
-        AdjustSise();
+    private void Start () {
+        AdjustSise ();
     }
 
-    private void Update() {
+    private void Update () {
         //AdjustSise();
     }
 
-    public void AdjustSise() {
-        Vector2 size = this.GetComponent<RectTransform>().sizeDelta;
+    public void AdjustSise () {
+        Vector2 size = this.GetComponent<RectTransform> ().sizeDelta;
         size.y = this.transform.childCount * childHeight;
-        this.GetComponent<RectTransform>().sizeDelta = size;
+        this.GetComponent<RectTransform> ().sizeDelta = size;
     }
 
 }

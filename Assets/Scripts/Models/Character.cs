@@ -41,6 +41,8 @@ public class Character {
             if (myJob != null) {
 
                 // We have a job
+
+                // TODO: Check to see if the job is reachable? 
                 destTile = myJob.tile;
 
                 myJob.RegisterJobCompleteCallback (OnJobEnded);
@@ -59,6 +61,13 @@ public class Character {
         // Tell the parent Update function that it should continue to execute.
     }
 
+    public void AbandonJob () {
+        nextTile = destTile = currTile;
+        pathAStar = null;
+        currTile.world.jobQueue.Enqueue (myJob);
+        myJob = null;
+    }
+
     public void Update_DoMovement (float deltaTime) {
 
         if (currTile == destTile) {
@@ -74,7 +83,7 @@ public class Character {
                 if (pathAStar.Length () == 0) {
                     Debug.LogError ($"Path_AStar returned no path to destination!");
                     // FIXME: Job should maybe be re-enqued instead?
-                    myJob.CancelJob ();
+                    AbandonJob ();
                     pathAStar = null;
                     return;
                 }

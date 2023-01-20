@@ -13,11 +13,6 @@ public class JobSpriteController : MonoBehaviour {
         WorldController.Instance.world.jobQueue.RegisterJobCreationCallback (OnJobCreated);
     }
 
-    // Update is called once per frame
-    void Update () {
-
-    }
-
     void OnJobCreated (Job job) {
 
         // FIXME: We can only do furniture-bulding jobs.
@@ -25,6 +20,12 @@ public class JobSpriteController : MonoBehaviour {
         // TODO: Sprite
 
         GameObject job_go = new GameObject ();
+
+        if (jobGameobjectMap.ContainsKey (job)) {
+            // Debug.LogError ($"OnJobCreated for a jobGo that already exists -- most likely a job being RE-QUEUED, as opposed to created");
+
+            return;
+        }
 
         jobGameobjectMap.Add (job, job_go);
 

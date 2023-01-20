@@ -80,7 +80,9 @@ public class Path_AStar {
                     continue; // ignore this already complrtrd neighbour.
                 }
 
-                float tentative_g_score = g_score[current] + DistBetween (current, edge_neighbour.node);
+                float movement_cost_to_neighbour = DistBetween (current, neighbour) * neighbour.data.movementCost;
+
+                float tentative_g_score = g_score[current] + movement_cost_to_neighbour;
 
                 if (OpenSet.Contains (neighbour) && tentative_g_score >= g_score[neighbour])
                     continue;
