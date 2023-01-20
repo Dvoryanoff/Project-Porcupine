@@ -92,9 +92,9 @@ public class Character {
 
             nextTile = pathAStar.Dequeue ();
 
-            // if (nextTile == currentTile) {
-            //     Debug.LogError ("Update_DoMovement - nextTile is currTile?");
-            // }
+            if (nextTile == currTile) {
+                Debug.LogError ("Update_DoMovement - nextTile is currTile?");
+            }
         }
 
         // Whats the total distance from A to B?

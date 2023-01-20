@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class Path_TileGraph {
@@ -49,8 +52,8 @@ public class Path_TileGraph {
             // if neighbours is walkable, create an edge to the relevant node.
 
             for (int i = 0; i < neighbours.Length; i++) {
-                if (neighbours[i] != null && neighbours[i].movementCost > 0) {
-                    // This neighbour exist and is walkable, co create an edge.
+                if (neighbours[i] != null && neighbours[i].movementCost > 0 && IsClippingCorner (t, neighbours[i]) == false) {
+                    // This neighbour exists, is walkable, and doesn't requiring clipping a corner --> so create an edge.
 
                     Path_Edge<Tile> e = new Path_Edge<Tile> ();
                     e.cost = neighbours[i].movementCost;
@@ -70,6 +73,33 @@ public class Path_TileGraph {
 
         }
         Debug.Log ($"PathTileGraph: created {edgeCount} edges!");
+    }
+
+    bool IsClippingCorner (Tile curr, Tile neigh) {
+        // If the movement from curr to neigh is diagonal (e.g. N-E)
+        // Then check to make sure we aren't clipping (e.g. N and E are both walkable)
+
+        int dX = curr.X - neigh.X;
+        int dY = curr.Y - neigh.Y;
+
+        if (Mathf.Abs (dX) + Mathf.Abs (dY) == 2) {
+            // We are diagonal
+
+            if (curr.world.GetTileAt (curr.X - dX, curr.Y).movementCost == 0) {
+                // East or West is unwalkable, therefore this would be a clipped movement.
+                return true;
+            }
+
+            if (curr.world.GetTileAt (curr.X, curr.Y - dY).movementCost == 0) {
+                // North or South is unwalkable, therefore this would be a clipped movement.
+                return true;
+            }
+
+            // If we reach here, we are diagonal, but not clipping
+        }
+
+        // If we are here, we are either not clipping, or not diagonal
+        return false;
     }
 }
 
