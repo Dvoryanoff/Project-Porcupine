@@ -1,4 +1,6 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WorldController : MonoBehaviour {
 
@@ -16,11 +18,7 @@ public class WorldController : MonoBehaviour {
         }
         Instance = this;
 
-        world = new World ();
-
-        // Center the camera.
-
-        Camera.main.transform.position = new Vector3 (world.Width / 2, world.Height / 2, Camera.main.transform.position.z);
+        CreateEmptyWorld ();
     }
 
     private void Update () {
@@ -37,6 +35,28 @@ public class WorldController : MonoBehaviour {
         int y = Mathf.FloorToInt (coord.y);
 
         return world.GetTileAt (x, y);
+    }
+
+    public void NewWorld () {
+        Debug.Log ("NewWorld button was clicked!");
+        SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+    }
+
+    public void SaveWorld () {
+
+    }
+
+    public void LoadWorld () {
+
+    }
+
+    private void CreateEmptyWorld () {
+        world = new World ();
+
+        // Center the camera.
+
+        Camera.main.transform.position = new Vector3 (world.Width / 2, world.Height / 2, Camera.main.transform.position.z);
+
     }
 }
 
