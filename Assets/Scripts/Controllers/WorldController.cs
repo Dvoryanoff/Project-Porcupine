@@ -1,4 +1,5 @@
-using UnityEditor.SearchService;
+using System.IO;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,6 +12,9 @@ public class WorldController : MonoBehaviour {
     public World world {
         get; protected set;
     }
+
+    static bool loadWorld = false;
+
     private void OnEnable () {
 
         if (Instance != null) {
@@ -18,7 +22,12 @@ public class WorldController : MonoBehaviour {
         }
         Instance = this;
 
-        CreateEmptyWorld ();
+        if (loadWorld) {
+            loadWorld = false;
+            CreateWorldFromSaveFile ();
+        } else {
+            CreateEmptyWorld ();
+        }
     }
 
     private void Update () {
@@ -43,14 +52,39 @@ public class WorldController : MonoBehaviour {
     }
 
     public void SaveWorld () {
+        Debug.Log ("SaveWorld button was clicked!");
+        XmlSerializer serializer = new XmlSerializer (typeof (World));
+        TextWriter writer = new StringWriter ();
 
+        serializer.Serialize (writer, world);
+        writer.Close ();
+
+        Debug.Log (writer.ToString ());
     }
 
     public void LoadWorld () {
 
+        // Reload the scene te resrt all data!
+        Debug.Log ("LoadWorld button was clicked!");
+        loadWorld = true;
+        SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
     }
 
     private void CreateEmptyWorld () {
+
+        // Create a world with empty tiles.
+        world = new World (100, 100);
+
+        // Center the camera.
+
+        Camera.main.transform.position = new Vector3 (world.Width / 2, world.Height / 2, Camera.main.transform.position.z);
+
+    }
+
+    private void CreateWorldFromSaveFile () {
+        Debug.Log ("CreateWorldFromSaveFile!");
+
+        // Create a world with empty tiles.
         world = new World ();
 
         // Center the camera.
@@ -58,5 +92,5 @@ public class WorldController : MonoBehaviour {
         Camera.main.transform.position = new Vector3 (world.Width / 2, world.Height / 2, Camera.main.transform.position.z);
 
     }
-}
 
+}

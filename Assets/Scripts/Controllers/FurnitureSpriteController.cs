@@ -28,17 +28,17 @@ public class FurnitureSpriteController : MonoBehaviour {
     private void LoadSprites () {
         furnitureSprites = new Dictionary<string, Sprite> ();
         Sprite[] sprites = Resources.LoadAll<Sprite> ("Images/Furniture");
-        Debug.Log ("LOADED RESOURCES:");
+        // Debug.Log ("LOADED RESOURCES:");
 
         foreach (Sprite s in sprites) {
-            Debug.Log (s);
+            // Debug.Log (s);
             furnitureSprites[s.name] = s;
         }
     }
 
     public void OnFurnitureCreated (Furniture furn) {
 
-        Debug.Log ("OnInstalledObjectCreated");
+        // Debug.Log ("OnInstalledObjectCreated");
 
         // Create a visual Game Object linked to this data.
 

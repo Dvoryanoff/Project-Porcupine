@@ -28,10 +28,10 @@ public class CharacterSpriteController : MonoBehaviour {
     private void LoadSprites () {
         characterSprites = new Dictionary<string, Sprite> ();
         Sprite[] sprites = Resources.LoadAll<Sprite> ("Images/Characters");
-        Debug.Log ("LOADED RESOURCES:");
+        // Debug.Log ("LOADED RESOURCES:");
 
         foreach (Sprite s in sprites) {
-            Debug.Log (s);
+            // Debug.Log (s);
             characterSprites[s.name] = s;
         }
     }

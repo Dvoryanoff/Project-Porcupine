@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class World {
+public class World : IXmlSerializable {
 
     Tile[,] tiles;
 
@@ -28,7 +31,7 @@ public class World {
 
     public JobQueue jobQueue;
 
-    public World (int width = 100, int height = 100) {
+    public World (int width, int height) {
         jobQueue = new JobQueue ();
 
         Width = width;
@@ -125,7 +128,7 @@ public class World {
             Debug.LogError ($"installedObjectProrotybe doesn't contains key: {objectType}");
             return;
         }
-        Debug.Log ("PlaceInstalledOblect");
+        // Debug.Log ("PlaceInstalledOblect");
 
         Furniture obj = Furniture.PlaceInstance (furniturePrototypes[objectType], t);
 
@@ -191,4 +194,32 @@ public class World {
         }
         return furniturePrototypes[objecType];
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+    ///                             SAVING AND LOADING!!!
+    ///
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public World () {
+
+    }
+    public XmlSchema GetSchema () {
+        return null;
+    }
+    public void WriteXml (XmlWriter writer) {
+        // Save info here!   
+
+        writer.WriteAttributeString ("Width", Width.ToString ());
+        writer.WriteAttributeString ("Height", Height.ToString ());
+
+        //writer.WriteStartElement ("Width");
+        //writer.WriteValue (Width);
+        //writer.WriteEndElement ();
+    }
+
+    public void ReadXml (XmlReader reader) {
+        // Load info here!
+    }
+
 }
