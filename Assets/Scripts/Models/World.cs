@@ -32,14 +32,18 @@ public class World : IXmlSerializable {
     public JobQueue jobQueue;
 
     public World (int width, int height) {
+        SetupWorld (width, height);
+    }
+
+    private void SetupWorld (int width, int height) {
         jobQueue = new JobQueue ();
 
         Width = width;
         Height = height;
 
-        tiles = new Tile[Width, Height];
+        tiles = new Tile[this.Width, Height];
 
-        for (int x = 0; x < Width; x++) {
+        for (int x = 0; x < this.Width; x++) {
             for (int y = 0; y < Height; y++) {
                 tiles[x, y] = new Tile (this, x, y);
                 tiles[x, y].RegisterTileTypeChangedCallback (OnTileChanged);
@@ -50,7 +54,6 @@ public class World : IXmlSerializable {
 
         CreateInstalledObjectsPrototype ();
         characters = new List<Character> ();
-
     }
 
     public void Update (float deltaTime) {
@@ -213,6 +216,18 @@ public class World : IXmlSerializable {
         writer.WriteAttributeString ("Width", Width.ToString ());
         writer.WriteAttributeString ("Height", Height.ToString ());
 
+        writer.WriteStartElement ("Tiles");
+        for (int x = 0; x < Width; x++) {
+            for (int y = 0; y < Height; y++) {
+                writer.WriteStartElement ("Tile");
+                tiles[x, y].WriteXml (writer);
+                writer.WriteEndElement ();
+                //break;
+            }
+            //break;
+        }
+        writer.WriteEndElement ();
+
         //writer.WriteStartElement ("Width");
         //writer.WriteValue (Width);
         //writer.WriteEndElement ();
@@ -220,6 +235,35 @@ public class World : IXmlSerializable {
 
     public void ReadXml (XmlReader reader) {
         // Load info here!
+        Debug.Log ("World::ReadXml");
+
+        reader.MoveToAttribute ("Width");
+        Width = reader.ReadContentAsInt ();
+
+        reader.MoveToAttribute ("Height");
+        Height = reader.ReadContentAsInt ();
+
+        reader.MoveToElement ();
+
+        SetupWorld (Width, Height);
+
+        reader.ReadToDescendant ("Tiles");
+        reader.ReadToDescendant ("Tile");
+        while (reader.IsStartElement ("Tile")) {
+            reader.MoveToAttribute ("X");
+            int x = reader.ReadContentAsInt ();
+
+            reader.MoveToAttribute ("Y");
+            int y = reader.ReadContentAsInt ();
+
+            Debug.Log ($"Reading tiles: {x}, {y}");
+
+            tiles[x, y].ReadXml (reader);
+
+            reader.ReadToNextSibling ("Tile");
+            break;
+        }
+
     }
 
 }

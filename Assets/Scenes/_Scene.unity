@@ -342,9 +342,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1906538368}
-        m_TargetAssemblyTypeName: BuildModeController, Assembly-CSharp
-        m_MethodName: DoPathfindingTest
+      - m_Target: {fileID: 1318234611}
+        m_TargetAssemblyTypeName: WorldController, Assembly-CSharp
+        m_MethodName: SaveWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1008,9 +1008,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1906538368}
-        m_TargetAssemblyTypeName: BuildModeController, Assembly-CSharp
-        m_MethodName: DoPathfindingTest
+      - m_Target: {fileID: 1318234611}
+        m_TargetAssemblyTypeName: WorldController, Assembly-CSharp
+        m_MethodName: LoadWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1522,9 +1522,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1906538368}
-        m_TargetAssemblyTypeName: BuildModeController, Assembly-CSharp
-        m_MethodName: DoPathfindingTest
+      - m_Target: {fileID: 1318234611}
+        m_TargetAssemblyTypeName: WorldController, Assembly-CSharp
+        m_MethodName: NewWorld
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

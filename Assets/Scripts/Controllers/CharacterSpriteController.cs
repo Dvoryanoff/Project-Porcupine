@@ -38,7 +38,7 @@ public class CharacterSpriteController : MonoBehaviour {
 
     public void OnCharacterCreated (Character character) {
 
-        // Debug.Log("OnCharactertCreated");
+        Debug.Log ("OnCharactertCreated");
 
         // Create a visual Game Object linked to this data.
 

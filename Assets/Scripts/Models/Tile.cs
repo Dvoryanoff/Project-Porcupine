@@ -1,9 +1,12 @@
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public enum TileType { Empty, Floor };
-public class Tile {
+public class Tile : IXmlSerializable {
 
     private TileType _type = TileType.Empty;
 
@@ -126,5 +129,27 @@ public class Tile {
 
         return neighbours;
 
+    }
+
+    public XmlSchema GetSchema () {
+        return null;
+    }
+
+    public void ReadXml (XmlReader reader) {
+        reader.MoveToAttribute ("X");
+        X = reader.ReadContentAsInt ();
+
+        reader.MoveToAttribute ("Y");
+        Y = reader.ReadContentAsInt ();
+
+        reader.MoveToAttribute ("Type");
+        Type = (TileType)reader.ReadContentAsInt ();
+
+    }
+
+    public void WriteXml (XmlWriter writer) {
+        writer.WriteAttributeString ("X", X.ToString ());
+        writer.WriteAttributeString ("Y", Y.ToString ());
+        writer.WriteAttributeString ("Type", ((int)Type).ToString ());
     }
 }
