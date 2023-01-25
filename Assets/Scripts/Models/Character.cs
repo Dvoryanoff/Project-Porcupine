@@ -1,7 +1,10 @@
 using System;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 using UnityEngine;
 
-public class Character {
+public class Character : IXmlSerializable {
 
     public float X {
         get {
@@ -17,6 +20,11 @@ public class Character {
     public Tile currTile {
         get; protected set;
     }
+
+    public Character () {
+
+    }
+
     Tile destTile;            // If we are not moving then destTile == currentTile.
     Tile nextTile;            // Next tile in the pathfinding sequence.
     Path_AStar pathAStar;
@@ -159,6 +167,18 @@ public class Character {
         }
 
         myJob = null;
+    }
+
+    public XmlSchema GetSchema () {
+        return null;
+    }
+    public void WriteXml (XmlWriter writer) {
+        writer.WriteAttributeString ("X", currTile.X.ToString ());
+        writer.WriteAttributeString ("Y", currTile.Y.ToString ());
+    }
+
+    public void ReadXml (XmlReader reader) {
+
     }
 
 }

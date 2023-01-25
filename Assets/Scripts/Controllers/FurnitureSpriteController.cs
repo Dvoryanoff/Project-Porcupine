@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FurnitureSpriteController : MonoBehaviour {
 
-    Dictionary<Furniture, GameObject> furnitureGameobjectMap;
+    Dictionary<Furniture, GameObject> furnitureGameObjectMap;
     Dictionary<string, Sprite> furnitureSprites;
 
     World world {
@@ -20,9 +20,17 @@ public class FurnitureSpriteController : MonoBehaviour {
 
         LoadSprites ();
 
-        furnitureGameobjectMap = new Dictionary<Furniture, GameObject> ();
+        // Instantiate our dictionary that tracks which GameObject is rendering which Tile data.
+        furnitureGameObjectMap = new Dictionary<Furniture, GameObject> ();
 
+        // Register our callback so that our GameObject gets updated whenever
+        // the tile's type changes.
         world.RegisterFurnitureCreated (OnFurnitureCreated);
+
+        // Go through any EXISTING furniture (i.e. from a save that was loaded OnEnable) and call the OnCreated event manually
+        foreach (Furniture furn in world.furnitures) {
+            OnFurnitureCreated (furn);
+        }
     }
 
     private void LoadSprites () {
@@ -44,7 +52,7 @@ public class FurnitureSpriteController : MonoBehaviour {
 
         GameObject furn_go = new GameObject ();
 
-        furnitureGameobjectMap.Add (furn, furn_go);
+        furnitureGameObjectMap.Add (furn, furn_go);
 
         furn_go.name = furn.objectType + "_" + furn.tile.X + "_" + furn.tile.Y;
         furn_go.transform.position = new Vector3 (furn.tile.X, furn.tile.Y, 0);
@@ -61,12 +69,12 @@ public class FurnitureSpriteController : MonoBehaviour {
 
         // Make sure that furnityre graphics are corrrect.
 
-        if (furnitureGameobjectMap.ContainsKey (furn) == false) {
+        if (furnitureGameObjectMap.ContainsKey (furn) == false) {
             Debug.LogError ("OnFurnitureChanged -- trying to change visuals for furniture not in our map.");
             return;
         }
 
-        GameObject furn_go = furnitureGameobjectMap[furn];
+        GameObject furn_go = furnitureGameObjectMap[furn];
         furn_go.GetComponent<SpriteRenderer> ().sprite = GetSpriteForFurniture (furn);
 
     }

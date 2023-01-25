@@ -41,6 +41,8 @@ public class TileSpriteController : MonoBehaviour {
                 sr.sprite = emptySprite;
                 sr.sortingLayerName = "Tiles";
 
+                OnTileChanged (tile_data);
+
             }
         }
         world.RegisterTileChanged (OnTileChanged);

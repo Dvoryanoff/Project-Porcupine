@@ -10,7 +10,8 @@ public class World : IXmlSerializable {
 
     Tile[,] tiles;
 
-    List<Character> characters;
+    public List<Character> characters;
+    public List<Furniture> furnitures;
 
     // The pathfinfing graph used to navigate our world map.
 
@@ -32,7 +33,12 @@ public class World : IXmlSerializable {
     public JobQueue jobQueue;
 
     public World (int width, int height) {
+
+        // Create an empty world.
         SetupWorld (width, height);
+
+        //Create one character.
+        Character c = CreateCharacter (GetTileAt (Width / 2, Height / 2));
     }
 
     private void SetupWorld (int width, int height) {
@@ -53,7 +59,9 @@ public class World : IXmlSerializable {
         Debug.Log ("World created with " + (Width * Height) + " tiles.");
 
         CreateInstalledObjectsPrototype ();
+
         characters = new List<Character> ();
+        furnitures = new List<Furniture> ();
     }
 
     public void Update (float deltaTime) {
@@ -110,10 +118,8 @@ public class World : IXmlSerializable {
                         PlaceFurniture ("Wall", tiles[x, y]);
                     }
                 }
-
             }
         }
-
     }
 
     public Tile GetTileAt (int x, int y) {
@@ -124,27 +130,30 @@ public class World : IXmlSerializable {
         return tiles[x, y];
     }
 
-    internal void PlaceFurniture (string objectType, Tile t) {
+    public Furniture PlaceFurniture (string objectType, Tile t) {
         // TODO: This function assumes 1x1 tile only ----- fix it later
 
         if (furniturePrototypes.ContainsKey (objectType) == false) {
             Debug.LogError ($"installedObjectProrotybe doesn't contains key: {objectType}");
-            return;
+            return null;
         }
         // Debug.Log ("PlaceInstalledOblect");
 
-        Furniture obj = Furniture.PlaceInstance (furniturePrototypes[objectType], t);
+        Furniture furn = Furniture.PlaceInstance (furniturePrototypes[objectType], t);
 
-        if (obj == null) {
+        if (furn == null) {
             // Failed to place object -- most likely there was already something there.
-            return;
+            return null;
         }
 
+        furnitures.Add (furn);
+
         if (cbFurnitureCreated != null) {
-            cbFurnitureCreated (obj);
+            cbFurnitureCreated (furn);
             InvalidateTileGraph ();
         }
 
+        return furn;
     }
 
     public void RegisterFurnitureCreated (Action<Furniture> callbackFunc) {
@@ -228,42 +237,99 @@ public class World : IXmlSerializable {
         }
         writer.WriteEndElement ();
 
-        //writer.WriteStartElement ("Width");
-        //writer.WriteValue (Width);
-        //writer.WriteEndElement ();
+        writer.WriteStartElement ("Furnitures");
+        foreach (Furniture furn in furnitures) {
+            writer.WriteStartElement ("Furniture");
+            furn.WriteXml (writer);
+            writer.WriteEndElement ();
+        }
+
+        writer.WriteEndElement ();
+
+        writer.WriteStartElement ("Characters");
+        foreach (Character character in characters) {
+            writer.WriteStartElement ("Character");
+            character.WriteXml (writer);
+            writer.WriteEndElement ();
+        }
+
+        writer.WriteEndElement ();
     }
 
     public void ReadXml (XmlReader reader) {
         // Load info here!
         Debug.Log ("World::ReadXml");
 
-        reader.MoveToAttribute ("Width");
-        Width = reader.ReadContentAsInt ();
-
-        reader.MoveToAttribute ("Height");
-        Height = reader.ReadContentAsInt ();
-
-        reader.MoveToElement ();
+        Width = int.Parse (reader.GetAttribute ("Width"));
+        Height = int.Parse (reader.GetAttribute ("Width"));
 
         SetupWorld (Width, Height);
 
-        reader.ReadToDescendant ("Tiles");
-        reader.ReadToDescendant ("Tile");
-        while (reader.IsStartElement ("Tile")) {
-            reader.MoveToAttribute ("X");
-            int x = reader.ReadContentAsInt ();
+        while (reader.Read ()) {
+            switch (reader.Name) {
+                case "Tiles":
+                    ReadXml_Tiles (reader);
+                    break;
 
-            reader.MoveToAttribute ("Y");
-            int y = reader.ReadContentAsInt ();
+                case "Furnitures":
+                    ReadXml_Furnitures (reader);
+                    break;
 
-            Debug.Log ($"Reading tiles: {x}, {y}");
-
-            tiles[x, y].ReadXml (reader);
-
-            reader.ReadToNextSibling ("Tile");
-            break;
+                case "Characters":
+                    ReadXml_Characters (reader);
+                    break;
+            }
         }
 
     }
 
+    private void ReadXml_Characters (XmlReader reader) {
+        Debug.Log ("ReadXml_Characters");
+
+        while (reader.Read ()) {
+            if (reader.Name != "Character") {
+                return;
+            } // We are out of Characters.
+
+            int x = int.Parse (reader.GetAttribute ("X"));
+            int y = int.Parse (reader.GetAttribute ("Y"));
+
+            Character c = CreateCharacter (tiles[x, y]);
+            c.ReadXml (reader);
+        }
+    }
+
+    private void ReadXml_Furnitures (XmlReader reader) {
+        Debug.Log ("ReadXml_Furnitures");
+        // We are in the "Furnitures" element, so read elements until
+        // we run out of "Furniture".
+
+        while (reader.Read ()) {
+            if (reader.Name != "Furniture") {
+                return;
+            } // We are out of Furniture.
+
+            int x = int.Parse (reader.GetAttribute ("X"));
+            int y = int.Parse (reader.GetAttribute ("Y"));
+
+            Furniture furn = PlaceFurniture (reader.GetAttribute ("objectType"), tiles[x, y]);
+            furn.ReadXml (reader);
+        }
+    }
+
+    private void ReadXml_Tiles (XmlReader reader) {
+        Debug.Log ("ReadXml_Tiles");
+        // We are in the "Tiles" element, so read elements until
+        // we run out of "Tile".
+
+        while (reader.Read ()) {
+            if (reader.Name != "Tile") {
+                return;
+            } // We are out of Tiles.
+
+            int x = int.Parse (reader.GetAttribute ("X"));
+            int y = int.Parse (reader.GetAttribute ("Y"));
+            tiles[x, y].ReadXml (reader);
+        }
+    }
 }
