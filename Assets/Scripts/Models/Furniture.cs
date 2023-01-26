@@ -1,10 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Unity.VisualScripting;
+using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public class Furniture : IXmlSerializable {
+
+    public Dictionary<string, object> furnParameters;
+    public Action<Furniture, float> updateActions;
+
+    public void Update (float deltaTime) {
+        if (updateActions != null) {
+            updateActions (this, deltaTime);
+        }
+    }
+
     public Tile tile {
         get; protected set;
     }
@@ -25,23 +38,40 @@ public class Furniture : IXmlSerializable {
     Action<Furniture> cbOnChanged;
 
     private Func<Tile, bool> funcPositionValidation;
+    private Furniture proto;
 
+    // Empty constructor is used for Serialization.
     public Furniture () {
+        furnParameters = new Dictionary<string, object> ();
+    }
+    // Copy constructor.
+    protected Furniture (Furniture other) {
+        this.objectType = other.objectType;
+        this.movementCost = other.movementCost;
+        this.width = other.width;
+        this.height = other.height;
+        this.linksToNeighbour = other.linksToNeighbour;
 
+        this.furnParameters = new Dictionary<string, object> (other.furnParameters);
+
+        if (updateActions != null) {
+            this.updateActions = (Action<Furniture, float>)other.updateActions.Clone ();
+        }
     }
 
-    static public Furniture CreatePrototype (string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linkToNeighbour = false) {
-        Furniture obj = new Furniture ();
+    virtual public Furniture Clone () {
+        return new Furniture (this);
+    }
 
-        obj.objectType = objectType;
-        obj.movementCost = movementCost;
-        obj.width = width;
-        obj.height = height;
-        obj.linksToNeighbour = linkToNeighbour;
-
-        obj.funcPositionValidation = obj.__IsValidPosition;
-
-        return obj;
+    // Create furniture from parameters -- this will probably ONLY ever be used for prototypes.
+    public Furniture (string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linkToNeighbour = false) {
+        this.objectType = objectType;
+        this.movementCost = movementCost;
+        this.width = width;
+        this.height = height;
+        this.linksToNeighbour = linkToNeighbour;
+        this.funcPositionValidation = this.__IsValidPosition;
+        furnParameters = new Dictionary<string, object> ();
     }
     static public Furniture PlaceInstance (Furniture proto, Tile tile) {
 
@@ -50,15 +80,10 @@ public class Furniture : IXmlSerializable {
             return null;
         }
 
-        Furniture obj = new Furniture ();
-
-        obj.objectType = proto.objectType;
-        obj.movementCost = proto.movementCost;
-        obj.width = proto.width;
-        obj.height = proto.height;
-        obj.linksToNeighbour = proto.linksToNeighbour;
+        Furniture obj = proto.Clone ();
 
         obj.tile = tile;
+
         if (tile.PlaceFurniture (obj) == false) {
             return null;
         };

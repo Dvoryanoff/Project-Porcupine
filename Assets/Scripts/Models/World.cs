@@ -84,7 +84,11 @@ public class World : IXmlSerializable {
     protected void CreateInstalledObjectsPrototype () {
         furniturePrototypes = new Dictionary<string, Furniture> ();
 
-        furniturePrototypes.Add ("Wall", Furniture.CreatePrototype ("Wall", 0, 1, 1, true));
+        furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true));
+        furniturePrototypes.Add ("Door", new Furniture ("Door", 0, 1, 1, true));
+
+        furniturePrototypes["Door"].furnParameters["openness"] = 0;
+        furniturePrototypes["Door"].updateActions += FurnitureActions.Door_UpdateAction;
     }
 
     public void RandomizeTiles () {

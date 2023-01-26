@@ -128,15 +128,15 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Door_EW
+      name: Door_
       rect:
         serializedVersion: 2
         x: 32
-        y: 238
+        y: 224
         width: 32
-        height: 4
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -152,12 +152,12 @@ TextureImporter:
       name: Door_NS
       rect:
         serializedVersion: 2
-        x: 142
+        x: 128
         y: 192
-        width: 4
+        width: 32
         height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 6
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -185,6 +185,7 @@ TextureImporter:
       Door_75: 320636781
       Door_21: -275042871
       Door_48: -1816514814
+      Door_: -1739403621
       Door_27: 189144428
       Door_39: 639506504
       Door_30: 1846113945
@@ -246,7 +247,6 @@ TextureImporter:
       Door_16: 1681702844
       Door_45: 43535410
       Door_2: 1040987734
-      Door_EW: -1739403621
       Door_71: 273329303
       Door_78: 138658925
       Door_44: 1321459494
