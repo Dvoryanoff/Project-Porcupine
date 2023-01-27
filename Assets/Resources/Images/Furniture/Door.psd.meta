@@ -128,7 +128,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Door_
+      name: Door
       rect:
         serializedVersion: 2
         x: 32
@@ -185,7 +185,6 @@ TextureImporter:
       Door_75: 320636781
       Door_21: -275042871
       Door_48: -1816514814
-      Door_: -1739403621
       Door_27: 189144428
       Door_39: 639506504
       Door_30: 1846113945
@@ -238,6 +237,7 @@ TextureImporter:
       Door_7: 1497600639
       Door_NS: 1167237121
       Door_53: 1760529758
+      Door: -1739403621
       Door_10: -1855258446
       Door_89: 1996948206
       Door_19: 341736228

@@ -95,6 +95,8 @@ public class Character : IXmlSerializable {
                     pathAStar = null;
                     return;
                 }
+                // Lets ignore the current tile tile? cause its the tile we currently in.
+                nextTile = pathAStar.Dequeue ();
             }
             // Grab the next waypoint from the pathing system!
 
@@ -110,8 +112,14 @@ public class Character : IXmlSerializable {
             Mathf.Pow (currTile.X - nextTile.X, 2) +
             Mathf.Pow (currTile.Y - nextTile.Y, 2));
 
+        if (nextTile.movementCost == 0) {
+            Debug.LogError ("FIXME: A character is trying to enter the unwalkable tile!");
+            nextTile = null; // nest tile is no-go
+            pathAStar = null; // pathfinding is out of date
+        }
+
         // How much distance can travel this Update?
-        float distThisFrame = speed * deltaTime;
+        float distThisFrame = speed / nextTile.movementCost * deltaTime;
 
         //How much is that in terms of percantage to our destination?
         float percThisFrame = distThisFrame / distToTravel;
