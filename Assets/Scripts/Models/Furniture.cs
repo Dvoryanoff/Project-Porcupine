@@ -9,6 +9,7 @@ public class Furniture : IXmlSerializable {
 
     public Dictionary<string, float> furnParameters;
     public Action<Furniture, float> updateActions;
+    public Func<Furniture, ENTERABILITY> IsEnterable;
 
     public void Update (float deltaTime) {
         if (updateActions != null) {
@@ -55,6 +56,8 @@ public class Furniture : IXmlSerializable {
         if (other.updateActions != null) {
             this.updateActions = (Action<Furniture, float>)other.updateActions.Clone ();
         }
+
+        this.IsEnterable = other.IsEnterable;
     }
 
     virtual public Furniture Clone () {

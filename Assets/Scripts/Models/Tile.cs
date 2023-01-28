@@ -6,6 +6,8 @@ using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 public enum TileType { Empty, Floor };
+
+public enum ENTERABILITY { Yes, Never, Soon };
 public class Tile : IXmlSerializable {
 
     private TileType _type = TileType.Empty;
@@ -145,5 +147,19 @@ public class Tile : IXmlSerializable {
         writer.WriteAttributeString ("X", X.ToString ());
         writer.WriteAttributeString ("Y", Y.ToString ());
         writer.WriteAttributeString ("Type", ((int)Type).ToString ());
+    }
+
+    public ENTERABILITY IsEnterable () {
+
+        // This returns true if you can enter this tile right this moment.
+        if (movementCost == 0)
+            return ENTERABILITY.Never;
+
+        // Check out furniture to see if it has a special block on enterability
+        if (furniture != null && furniture.IsEnterable != null) {
+            return furniture.IsEnterable (furniture);
+        }
+
+        return ENTERABILITY.Yes;
     }
 }

@@ -93,7 +93,9 @@ public class World : IXmlSerializable {
         furniturePrototypes.Add ("Door", new Furniture ("Door", 1, 1, 1, false));
 
         furniturePrototypes["Door"].furnParameters["openness"] = 0;
+        furniturePrototypes["Door"].furnParameters["is_opening"] = 0;
         furniturePrototypes["Door"].updateActions += FurnitureActions.Door_UpdateAction;
+        furniturePrototypes["Door"].IsEnterable = FurnitureActions.Door_IsEnterable;
     }
 
     public void RandomizeTiles () {
@@ -237,10 +239,12 @@ public class World : IXmlSerializable {
         writer.WriteStartElement ("Tiles");
         for (int x = 0; x < Width; x++) {
             for (int y = 0; y < Height; y++) {
-                writer.WriteStartElement ("Tile");
-                tiles[x, y].WriteXml (writer);
-                writer.WriteEndElement ();
-                //break;
+                if (tiles[x, y].Type != TileType.Empty) {
+                    writer.WriteStartElement ("Tile");
+                    tiles[x, y].WriteXml (writer);
+                    writer.WriteEndElement ();
+                    //break;
+                }
             }
             //break;
         }

@@ -52,6 +52,7 @@ public class Path_AStar {
         }
 
         Dictionary<Path_Node<Tile>, float> f_score = new Dictionary<Path_Node<Tile>, float> ();
+
         foreach (Path_Node<Tile> n in nodes.Values) {
             f_score[n] = Mathf.Infinity;
             f_score[start] = HeuristicCostEstimate (start, goal);
@@ -93,6 +94,8 @@ public class Path_AStar {
 
                 if (OpenSet.Contains (neighbour) == false) {
                     OpenSet.Enqueue (neighbour, f_score[neighbour]);
+                } else {
+                    OpenSet.UpdatePriority (neighbour, f_score[neighbour]);
                 }
             } // for each neighbour
         }// while 

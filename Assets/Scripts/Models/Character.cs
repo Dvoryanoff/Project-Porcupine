@@ -82,15 +82,17 @@ public class Character : IXmlSerializable {
             return; // We're already where we want to be.
         }
 
+        // currTile = The tile I am currently in (and may be in the process of leaving)
+        // nextTile = The tile I am currently entering
+        // destTile = Our final dest   ination -- we never walk here directly, but instead use it for the pathfinding
         if (nextTile == null || nextTile == currTile) {
 
             // Get the next tile from the pathfinding system.
-
             if (pathAStar == null || pathAStar.Length () == 0) {
+                // Generate a path to our destination.
                 pathAStar = new Path_AStar (currTile.world, currTile, destTile); // This will calculate path from curr to dest.
                 if (pathAStar.Length () == 0) {
                     Debug.LogError ($"Path_AStar returned no path to destination!");
-                    // FIXME: Job should maybe be re-enqued instead?
                     AbandonJob ();
                     pathAStar = null;
                     return;
@@ -98,8 +100,8 @@ public class Character : IXmlSerializable {
                 // Lets ignore the current tile tile? cause its the tile we currently in.
                 nextTile = pathAStar.Dequeue ();
             }
-            // Grab the next waypoint from the pathing system!
 
+            // Grab the next waypoint from the pathing system!
             nextTile = pathAStar.Dequeue ();
 
             if (nextTile == currTile) {
@@ -112,10 +114,22 @@ public class Character : IXmlSerializable {
             Mathf.Pow (currTile.X - nextTile.X, 2) +
             Mathf.Pow (currTile.Y - nextTile.Y, 2));
 
-        if (nextTile.movementCost == 0) {
+        if (nextTile.IsEnterable () == ENTERABILITY.Never) {
+            // Most likely a wall got built, so we just need to reset our pathfinding information.
+            // FIXME: Ideally, when a wall gets spawned, we should invalidate our path immediately,
+            //		  so that we don't waste a bunch of time walking towards a dead end.
+            //		  To save CPU, maybe we can only check every so often?
+            //		  Or maybe we should register a callback to the OnTileChanged event?
             Debug.LogError ("FIXME: A character is trying to enter the unwalkable tile!");
             nextTile = null; // nest tile is no-go
             pathAStar = null; // pathfinding is out of date
+            return;
+        } else if (nextTile.IsEnterable () == ENTERABILITY.Soon) {
+            // We can't enter the NOW, but we should be able to in the
+            // future. This is likely a DOOR.
+            // So we DON'T bail on our movement/path, but we do return
+            // now and don't actually process the movement.
+            return;
         }
 
         // How much distance can travel this Update?
