@@ -34,7 +34,7 @@ public class Furniture : IXmlSerializable {
     // TODO: Implement larger objects
     // TODO: Implement object rotation
 
-    Action<Furniture> cbOnChanged;
+    public Action<Furniture> cbOnChanged;
 
     private Func<Tile, bool> funcPositionValidation;
     private Furniture proto;

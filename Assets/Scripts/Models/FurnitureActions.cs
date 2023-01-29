@@ -4,14 +4,16 @@ public class FurnitureActions : MonoBehaviour {
     public static void Door_UpdateAction (Furniture furn, float deltaTime) {
         // Debug.Log ($"FurnitureActions {furn.furnParameters["openness"]}");
         if (furn.furnParameters["is_opening"] >= 1) {
-            furn.furnParameters["openness"] += Time.deltaTime;
+            furn.furnParameters["openness"] += Time.deltaTime * 4; // FIXME: Maybe a dooropenspeed parameter?
             if (furn.furnParameters["openness"] >= 1) {
                 furn.furnParameters["is_opening"] = 0;
             }
         } else {
-            furn.furnParameters["openness"] -= Time.deltaTime;
+            furn.furnParameters["openness"] -= Time.deltaTime * 4;
         }
         furn.furnParameters["openness"] = Mathf.Clamp01 (furn.furnParameters["openness"]);
+
+        furn.cbOnChanged?.Invoke (furn);
     }
 
     public static ENTERABILITY Door_IsEnterable (Furniture furn) {

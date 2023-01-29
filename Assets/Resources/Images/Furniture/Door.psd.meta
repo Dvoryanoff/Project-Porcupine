@@ -169,6 +169,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Door_openness_3
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 128
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e3910a229aa1f544848b8ab889e7ea8
+      internalID: 155726489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Door_openness_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 160
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91c5d2a0d8c05a8419380c0ece31268e
+      internalID: 942409097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Door_openness_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 192
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aab40426b1e301c49b968b7b436e048e
+      internalID: -707381352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -225,6 +288,7 @@ TextureImporter:
       Door_32: -298702478
       Door_20: -1133792534
       Door_47: 752340789
+      Door_openness_2: 942409097
       Door_43: 1799976064
       Door_82: 115129294
       Door_80: -472824405
@@ -246,13 +310,13 @@ TextureImporter:
       Door_29: 1507396100
       Door_16: 1681702844
       Door_45: 43535410
-      Door_2: 1040987734
       Door_71: 273329303
       Door_78: 138658925
       Door_44: 1321459494
       Door_64: 1970414211
       Door_63: 2125549338
       Door_34: -96011048
+      Door_openness_1: 1040987734
       Door_52: 265045488
       Door_28: -1630471405
       Door_23: 1759609185
@@ -268,6 +332,7 @@ TextureImporter:
       Door_5: -1595083010
       Door_26: -1455822201
       Door_92: 359068537
+      Door_openness_3: 155726489
       Door_14: -397918805
       Door_55: -1948039753
       Door_84: -457894941
