@@ -60,10 +60,7 @@ public class Character : IXmlSerializable {
 
         // Are we there yet?
         if (myJob != null && currTile == myJob.tile) {
-
-            if (myJob != null) {
-                myJob.DoWork (deltaTime);
-            }
+            myJob.DoWork (deltaTime);
             // Tell the parent Update function that it should stop.
         }
         // Tell the parent Update function that it should continue to execute.

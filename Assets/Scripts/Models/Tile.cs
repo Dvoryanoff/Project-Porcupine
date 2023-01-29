@@ -45,14 +45,16 @@ public class Tile : IXmlSerializable {
         get; protected set;
     }
 
+    const float baseTileMovementCost = 1; // FIXME: It's just hardcoded for now.
+
     public float movementCost {
         get {
             if (Type == TileType.Empty)
                 return 0; // 0 is Unwalkable.
             if (furniture == null)
-                return 1; // Normal cost.
+                return baseTileMovementCost; // Normal cost.
 
-            return 1 * furniture.movementCost;
+            return baseTileMovementCost * furniture.movementCost;
 
         }
     }

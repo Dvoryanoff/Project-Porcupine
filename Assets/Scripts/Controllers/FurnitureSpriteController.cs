@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Jobs;
 using UnityEngine;
 
 public class FurnitureSpriteController : MonoBehaviour {
@@ -52,11 +53,31 @@ public class FurnitureSpriteController : MonoBehaviour {
 
         GameObject furn_go = new GameObject ();
 
+        // FIXME: This hardcoding is not ideal.
+
         furnitureGameObjectMap.Add (furn, furn_go);
 
         furn_go.name = furn.objectType + "_" + furn.tile.X + "_" + furn.tile.Y;
         furn_go.transform.position = new Vector3 (furn.tile.X, furn.tile.Y, 0);
         furn_go.transform.SetParent (this.transform, true);
+
+        if (furn.objectType == "Door") {
+
+            // By default, the door graphic is meant for walls to the east & west
+            // Check to see if we actually have a wall north/south, and if so
+            // then rotate this GO by 90 degrees
+            Tile northTile = world.GetTileAt (furn.tile.X, furn.tile.Y + 1);
+            Tile southTile = world.GetTileAt (furn.tile.X, furn.tile.Y - 1);
+            if (northTile != null &&
+            southTile != null &&
+            northTile.furniture != null &&
+                southTile.furniture != null &&
+                northTile.furniture.objectType == "Wall" &&
+                southTile.furniture.objectType == "Wall") {
+                furn_go.transform.rotation = Quaternion.Euler (0, 0, 90);
+                furn_go.transform.Translate (1f, 0, 0, Space.World); // UGLY HACK TO COPMENSATE FOR BOTTOM_LAFT ANCHOR POINT!
+            }
+        }
 
         SpriteRenderer sr = furn_go.AddComponent<SpriteRenderer> ();
         sr.sprite = GetSpriteForFurniture (furn);
@@ -98,7 +119,7 @@ public class FurnitureSpriteController : MonoBehaviour {
                     // Door is fully open.
                     spriteName = "Door_openness_3";
                 }
-                Debug.Log (spriteName);
+                // Debug.Log (spriteName);
             }
             return furnitureSprites[spriteName];
         }
