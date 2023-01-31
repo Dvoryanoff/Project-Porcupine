@@ -27,6 +27,8 @@ public class Tile : IXmlSerializable {
         }
     }
 
+    public Room room;
+
     Inventory inventory;
 
     public Job pendingFurnitureJob;
