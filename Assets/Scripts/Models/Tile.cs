@@ -166,4 +166,17 @@ public class Tile : IXmlSerializable {
 
         return ENTERABILITY.Yes;
     }
+
+    public Tile North () {
+        return world.GetTileAt (X, Y + 1);
+    }
+    public Tile South () {
+        return world.GetTileAt (X, Y - 1);
+    }
+    public Tile West () {
+        return world.GetTileAt (X - 1, Y);
+    }
+    public Tile East () {
+        return world.GetTileAt (X + 1, Y + 1);
+    }
 }
