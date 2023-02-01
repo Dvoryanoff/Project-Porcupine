@@ -120,7 +120,7 @@ public class Room {
                     }
 
                     // We know t2 is not null nor is it an empty tile, so just make sure it
-                    // hasn't already been processed and isn't a "wall" type tile.
+                    // hasn't already been processed and isn't a "wall" type tile.  
                     if (t2.room == oldRoom && (t2.furniture == null || t2.furniture.roomEnclosure == false)) {
                         tilesToCheck.Enqueue (t2);
                     }

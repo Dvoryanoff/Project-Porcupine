@@ -20,6 +20,15 @@ public class MouseController : MonoBehaviour {
         //SimplePool.Preload(circleCursorPrefab, 100);
     }
 
+    // Gets the mouse position in a world space.
+    public Vector3 GetMousePosition () {
+        return currentFramePosition;
+    }
+
+    public Tile GetMouseOverTile () {
+        return WorldController.Instance.world.GetTileAt (((int)currentFramePosition.x), (int)currentFramePosition.y);
+    }
+
     void Update () {
 
         currentFramePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
