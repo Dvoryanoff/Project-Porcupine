@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Jobs;
 using UnityEngine;
 
 public class FurnitureSpriteController : MonoBehaviour {
@@ -103,16 +102,20 @@ public class FurnitureSpriteController : MonoBehaviour {
     public Sprite GetSpriteForFurniture (Furniture furn) {
 
         string spriteName = furn.objectType;
+
         if (furn.linksToNeighbour == false) {
 
+            // If this is a DOOR, lets chack OPENNESS and update the sprite.
+            // FIXME: All this hardcoding needs to be generilized later.
+
             if (furn.objectType == "Door") {
-                if (furn.furnParameters["openness"] < 0.1f) {
+                if (furn.GetParameter ("openness") < 0.1f) {
                     // Door is closed.
                     spriteName = "Door";
-                } else if (furn.furnParameters["openness"] < 0.5f) {
+                } else if (furn.GetParameter ("openness") < 0.5f) {
                     // Door is a bit open.
                     spriteName = "Door_openness_1";
-                } else if (furn.furnParameters["openness"] < 0.9f) {
+                } else if (furn.GetParameter ("openness") < 0.9f) {
                     // Door is a lot open.
                     spriteName = "Door_openness_2";
                 } else {
@@ -156,24 +159,6 @@ public class FurnitureSpriteController : MonoBehaviour {
         if (furnitureSprites.ContainsKey (spriteName) == false) {
             Debug.LogError ($"GetSpritesForInstalledObjects: -- No sprites with name: {spriteName}");
             return null;
-        }
-
-        // If this is a DOOR, lets chack OENNESS and update the sprite.
-        // FIXME: All this hardcoding needs to be generilized later.
-        if (furn.objectType == "Door") {
-            if (furn.furnParameters["openness"] < 0.1f) {
-                // Door is closed.
-                spriteName = "Door";
-            } else if (furn.furnParameters["openness"] < 0.5f) {
-                // Door is a bit open.
-                spriteName = "Door_openness_1";
-            } else if (furn.furnParameters["openness"] < 0.9f) {
-                // Door is a lot open.
-                spriteName = "Door_openness_2";
-            } else {
-                // Door is fully open.
-                spriteName = "Door_openness_3";
-            }
         }
 
         return furnitureSprites[spriteName];

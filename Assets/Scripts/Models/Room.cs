@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -127,6 +126,12 @@ public class Room {
                 }
             }
         }
+
+        // Copy data from the old room into the new room.
+        newRoom.atmosCO2 = oldRoom.atmosCO2;
+        newRoom.atmosO2 = oldRoom.atmosO2;
+        newRoom.atmosN = oldRoom.atmosN;
+
         // Tell the world that a new room has been formed.
         tile.world.AddRoom (newRoom);
     }

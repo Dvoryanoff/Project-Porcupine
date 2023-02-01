@@ -39,7 +39,7 @@ public class World : IXmlSerializable {
         SetupWorld (width, height);
 
         //Create one character.
-        Character c = CreateCharacter (GetTileAt (Width / 2, Height / 2));
+        CreateCharacter (GetTileAt (Width / 2, Height / 2));
     }
 
     public Room GetOutsideRoom () {
@@ -118,9 +118,9 @@ public class World : IXmlSerializable {
         furniturePrototypes.Add ("Wall", new Furniture ("Wall", 0, 1, 1, true, true));
         furniturePrototypes.Add ("Door", new Furniture ("Door", 1, 1, 1, false, true));
 
-        furniturePrototypes["Door"].furnParameters["openness"] = 0;
-        furniturePrototypes["Door"].furnParameters["is_opening"] = 0;
-        furniturePrototypes["Door"].updateActions += FurnitureActions.Door_UpdateAction;
+        furniturePrototypes["Door"].SetParameter ("openness", 0);
+        furniturePrototypes["Door"].SetParameter ("is_openning", 0);
+        furniturePrototypes["Door"].RegisterUpdateAction (FurnitureActions.Door_UpdateAction);
         furniturePrototypes["Door"].IsEnterable = FurnitureActions.Door_IsEnterable;
     }
 

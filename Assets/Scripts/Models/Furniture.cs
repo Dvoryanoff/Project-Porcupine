@@ -7,8 +7,15 @@ using Debug = UnityEngine.Debug;
 
 public class Furniture : IXmlSerializable {
 
-    public Dictionary<string, float> furnParameters;
-    public Action<Furniture, float> updateActions;
+    // Custom parameter for this particular piece of furniture.  We are
+    // using a dictionary because later, custom LUA function will be
+    // able to use whatever parameters the user/modder would like.
+    // Basically, the LUA code will bind to this dictionary.
+    protected Dictionary<string, float> furnParameters;
+
+    // These actions are called every update. They get passed the furniture
+    // they belong to, plus a deltaTime.
+    protected Action<Furniture, float> updateActions;
     public Func<Furniture, ENTERABILITY> IsEnterable;
 
     public void Update (float deltaTime) {
@@ -37,7 +44,9 @@ public class Furniture : IXmlSerializable {
     public Furniture () {
         furnParameters = new Dictionary<string, float> ();
     }
-    // Copy constructor.
+
+    // Copy Constructor -- don't call this directly, unless we never
+    // do ANY sub-classing. Instead use Clone(), which is more virtual.
     protected Furniture (Furniture other) {
         this.objectType = other.objectType;
         this.movementCost = other.movementCost;
@@ -55,19 +64,27 @@ public class Furniture : IXmlSerializable {
         this.IsEnterable = other.IsEnterable;
     }
 
+    // Make a copy of the current furniture.  Sub-classed should
+    // override this Clone() if a different (sub-classed) copy
+    // constructor should be run.
     virtual public Furniture Clone () {
         return new Furniture (this);
     }
 
     // Create furniture from parameters -- this will probably ONLY ever be used for prototypes.
-    public Furniture (string objectType, float movementCost = 1f, int width = 1, int height = 1, bool linkToNeighbour = false, bool roomEnclosure = false) {
+    public Furniture (string objectType,
+        float movementCost = 1f,
+        int width = 1,
+        int height = 1,
+        bool linkToNeighbour = false,
+        bool roomEnclosure = false) {
         this.objectType = objectType;
         this.movementCost = movementCost;
         this.roomEnclosure = roomEnclosure;
         this.width = width;
         this.height = height;
         this.linksToNeighbour = linkToNeighbour;
-        this.funcPositionValidation = this.__IsValidPosition;
+        this.funcPositionValidation = this.DEFAULT_IsValidPosition;
         furnParameters = new Dictionary<string, float> ();
     }
     static public Furniture PlaceInstance (Furniture proto, Tile tile) {
@@ -130,9 +147,13 @@ public class Furniture : IXmlSerializable {
         return funcPositionValidation (tile);
     }
 
-    // FIXME: These functions shouldn't be public.
-
-    public bool __IsValidPosition (Tile tile) {
+    // FIXME: These functions should never be called directly,
+    // so they probably shouldn't be public functions of Furniture
+    // This will be replaced by validation checks fed to use from 
+    // LUA files that will be customizable for each piece of furniture.
+    // For example, a door might specific that it needs two walls to
+    // connect to.
+    protected bool DEFAULT_IsValidPosition (Tile tile) {
         // Make sure tile is FLOOR.
 
         if (tile.Type != TileType.Floor) {
@@ -150,16 +171,6 @@ public class Furniture : IXmlSerializable {
     }
 
     // FIXME: These functions shouldn't be public.
-
-    public bool __IsValidPosition_Door (Tile tile) {
-        // Make sure we have a pair of E/W walls or S/N walls.
-
-        if (__IsValidPosition (tile) == false) {
-            return false;
-        }
-
-        return true;
-    }
 
     public XmlSchema GetSchema () {
         return null;
@@ -191,6 +202,33 @@ public class Furniture : IXmlSerializable {
                 furnParameters[k] = v;
             } while (reader.ReadToNextSibling ("Param"));
         }
+    }
+    public float GetParameter (string key, float default_value = 0) {
+        if (furnParameters.ContainsKey (key) == false) {
+            return default_value;
+        }
+        return furnParameters[key];
+    }
+
+    public void SetParameter (string key, float value) {
+        furnParameters[key] = value;
+    }
+
+    public void ChangeParameter (string key, float value) {
+        if (furnParameters.ContainsKey (key) == false) {
+            furnParameters[key] = value;
+        }
+        furnParameters[key] += value;
+    }
+
+    // Registers a function that will be called every Update.
+    // (Later this implementation might change a bit as we support LUA.)
+    public void RegisterUpdateAction (Action<Furniture, float> a) {
+        updateActions += a;
+    }
+
+    public void UnregisterUpdateActions (Action<Furniture, float> a) {
+        updateActions -= a;
     }
 }
 

@@ -1,17 +1,20 @@
 using UnityEngine;
 
 public class FurnitureActions : MonoBehaviour {
+
+    // This file contains code which will likely be completely moved to
+    // some LUA files later on and will be parsed at run-time.
     public static void Door_UpdateAction (Furniture furn, float deltaTime) {
         // Debug.Log ($"FurnitureActions {furn.furnParameters["openness"]}");
-        if (furn.furnParameters["is_opening"] >= 1) {
-            furn.furnParameters["openness"] += Time.deltaTime * 4; // FIXME: Maybe a dooropenspeed parameter?
-            if (furn.furnParameters["openness"] >= 1) {
-                furn.furnParameters["is_opening"] = 0;
+        if (furn.GetParameter ("is_openning") >= 1) {
+            furn.ChangeParameter ("openness", deltaTime * 4); // FIXME: Maybe a dooropenspeed parameter?
+            if (furn.GetParameter ("openness") >= 1) {
+                furn.SetParameter ("is_opening", 0);
             }
         } else {
-            furn.furnParameters["openness"] -= Time.deltaTime * 4;
+            furn.ChangeParameter ("openness", deltaTime * 4);
         }
-        furn.furnParameters["openness"] = Mathf.Clamp01 (furn.furnParameters["openness"]);
+        furn.SetParameter ("openness", Mathf.Clamp01 (furn.GetParameter ("openness")));
 
         furn.cbOnChanged?.Invoke (furn);
     }
@@ -19,9 +22,9 @@ public class FurnitureActions : MonoBehaviour {
     public static ENTERABILITY Door_IsEnterable (Furniture furn) {
         Debug.Log ("Door_IsEnterable");
 
-        furn.furnParameters["is_opening"] = 1;
+        furn.SetParameter ("is_opening", 1);
 
-        if (furn.furnParameters["openness"] >= 1) {
+        if (furn.GetParameter ("openness") >= 1) {
             return ENTERABILITY.Yes;
         }
         return ENTERABILITY.Soon;
