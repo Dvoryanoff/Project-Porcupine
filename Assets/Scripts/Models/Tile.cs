@@ -29,7 +29,7 @@ public class Tile : IXmlSerializable {
 
     public Room room;
 
-    Inventory inventory;
+    public Inventory inventory { get; set; }
 
     public Job pendingFurnitureJob;
 
@@ -88,7 +88,40 @@ public class Tile : IXmlSerializable {
 
         furniture = objInstance;
         return true;
+    }
 
+    public bool PlaceInventory (Inventory inv) {
+        if (inv == null) {
+            inventory = null;
+            return true;
+        }
+        if (inventory != null) {
+
+            if (inventory.objectType != inv.objectType) {
+                Debug.Log ("Trying to assing inventory to a tile that already have one of a different type!");
+                return false;
+            }
+
+            int numToMove = inv.stackSize;
+            if (inventory.stackSize + numToMove > inventory.maxStackSize) {
+                numToMove = inventory.maxStackSize - inventory.stackSize;
+            }
+
+            inventory.stackSize += numToMove;
+            inv.stackSize -= numToMove;
+
+            return true;
+        }
+
+        // At this point, we know that our current inventory is actually
+        // null.  Now we can't just do a direct assignment, because
+        // the inventory manager needs to know that the old stack is now
+        // empty and has to be removed from the previous lists.
+
+        inventory = inv.Clone ();
+        inventory.tile = this;
+        inv.stackSize = 0;
+        return true;
     }
 
     public bool IsNeighbour (Tile tile, bool diagOkay = false) {
