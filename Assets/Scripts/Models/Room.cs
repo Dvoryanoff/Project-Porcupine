@@ -13,30 +13,30 @@ public class Room {
         tiles = new List<Tile> ();
     }
 
-    public void AssignTile (Tile tile) {
-        if (tiles.Contains (tile)) {
+    public void AssignTile ( Tile tile ) {
+        if ( tiles.Contains ( tile ) ) {
             // This tile already in this room.
             return;
         }
 
-        if (tile.room != null) {
+        if ( tile.room != null ) {
             // Belongs to some other room.
-            tile.room.tiles.Remove (tile);
+            tile.room.tiles.Remove ( tile );
         }
 
         tile.room = this;
-        tiles.Add (tile);
+        tiles.Add ( tile );
     }
 
     public void UnAssignAllTiles () {
-        for (int i = 0; i < tiles.Count; i++) {
+        for ( int i = 0; i < tiles.Count; i++ ) {
             tiles[i].room = tiles[i].world.GetOutsideRoom (); //Assign to outside.
         }
 
         tiles = new List<Tile> ();
     }
 
-    public static void DoRoomFloodFill (Furniture sourceFurniture) {
+    public static void DoRoomFloodFill ( Furniture sourceFurniture ) {
         // sourceFurniture is the piece of furniture that may be
         // splitting two existing rooms, or may be the final 
         // enclosing piece to form a new room.
@@ -47,52 +47,52 @@ public class Room {
         Room oldRoom = sourceFurniture.tile.room;
 
         // Try building new rooms for each of our NESW directions
-        foreach (Tile t in sourceFurniture.tile.GetNeighbours ()) {
-            ActualFloodFill (t, oldRoom);
+        foreach ( Tile t in sourceFurniture.tile.GetNeighbours () ) {
+            ActualFloodFill ( t, oldRoom );
         }
 
         sourceFurniture.tile.room = null;
-        oldRoom.tiles.Remove (sourceFurniture.tile);
+        oldRoom.tiles.Remove ( sourceFurniture.tile );
 
         // If this piece of furniture was added to an existing room
         // (which should always be true assuming with consider "outside" to be a big room)
         // delete that room and assign all tiles within to be "outside" for now
 
-        if (oldRoom != world.GetOutsideRoom ()) {
+        if ( oldRoom != world.GetOutsideRoom () ) {
             // At this point, oldRoom shouldn't have any more tiles left in it,
             // so in practice this "DeleteRoom" should mostly only need
             // to remove the room from the world's list.
 
-            if (oldRoom.tiles.Count > 0) {
-                Debug.LogError ("'oldRoom' still has tiles assigned to it. This is clearly wrong.");
+            if ( oldRoom.tiles.Count > 0 ) {
+                Debug.LogError ( "'oldRoom' still has tiles assigned to it. This is clearly wrong." );
             }
 
-            world.DeleteRoom (oldRoom);
+            world.DeleteRoom ( oldRoom );
         }
 
     }
 
-    protected static void ActualFloodFill (Tile tile, Room oldRoom) {
-        if (tile == null) {
+    protected static void ActualFloodFill ( Tile tile, Room oldRoom ) {
+        if ( tile == null ) {
             // We are trying to flood fill off the map, so just return
             // without doing anything.
             return;
         }
 
-        if (tile.room != oldRoom) {
+        if ( tile.room != oldRoom ) {
             // This tile was already assigned to another "new" room, which means
             // that the direction picked isn't isolated. So we can just return
             // without creating a new room.
             return;
         }
 
-        if (tile.furniture != null && tile.furniture.roomEnclosure) {
+        if ( tile.furniture != null && tile.furniture.roomEnclosure ) {
             // This tile has a wall/door/whatever in it, so clearly
             // we can't do a room here.
             return;
         }
 
-        if (tile.Type == TileType.Empty) {
+        if ( tile.Type == TileType.Empty ) {
             // This tile is empty space and must remain part of the outside.
             return;
         }
@@ -101,14 +101,14 @@ public class Room {
 
         Room newRoom = new Room ();
         Queue<Tile> tilesToCheck = new Queue<Tile> ();
-        tilesToCheck.Enqueue (tile);
-        while (tilesToCheck.Count > 0) {
+        tilesToCheck.Enqueue ( tile );
+        while ( tilesToCheck.Count > 0 ) {
             Tile t = tilesToCheck.Dequeue ();
-            if (t.room == oldRoom) {
-                newRoom.AssignTile (t);
+            if ( t.room == oldRoom ) {
+                newRoom.AssignTile ( t );
                 Tile[] neighbours = t.GetNeighbours ();
-                foreach (Tile t2 in neighbours) {
-                    if (t2 == null || t2.Type == TileType.Empty) {
+                foreach ( Tile t2 in neighbours ) {
+                    if ( t2 == null || t2.Type == TileType.Empty ) {
                         // We have hit open space (either by being the edge of the map or being an empty tile)
                         // so this "room" we're building is actually part of the Outside.
                         // Therefore, we can immediately end the flood fill (which otherwise would take ages)
@@ -120,8 +120,8 @@ public class Room {
 
                     // We know t2 is not null nor is it an empty tile, so just make sure it
                     // hasn't already been processed and isn't a "wall" type tile.  
-                    if (t2.room == oldRoom && (t2.furniture == null || t2.furniture.roomEnclosure == false)) {
-                        tilesToCheck.Enqueue (t2);
+                    if ( t2.room == oldRoom && ( t2.furniture == null || t2.furniture.roomEnclosure == false ) ) {
+                        tilesToCheck.Enqueue ( t2 );
                     }
                 }
             }
@@ -133,6 +133,6 @@ public class Room {
         newRoom.atmosN = oldRoom.atmosN;
 
         // Tell the world that a new room has been formed.
-        tile.world.AddRoom (newRoom);
+        tile.world.AddRoom ( newRoom );
     }
 }

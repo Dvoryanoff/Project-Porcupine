@@ -53,12 +53,12 @@ TagManager:
   - name: Inventory
     uniqueID: 269006907
     locked: 0
+  - name: InventoryUI
+    uniqueID: 904636871
+    locked: 0
   - name: Characters
     uniqueID: 1336622789
     locked: 0
   - name: TileUI
     uniqueID: 1245381627
-    locked: 0
-  - name: New Layer 7
-    uniqueID: 904636871
     locked: 0

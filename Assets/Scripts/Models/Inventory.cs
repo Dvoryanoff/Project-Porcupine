@@ -14,13 +14,13 @@ public class Inventory {
 
     }
 
-    protected Inventory (Inventory other) {
+    protected Inventory ( Inventory other ) {
         objectType = other.objectType;
         stackSize = other.stackSize;
         maxStackSize = other.maxStackSize;
     }
 
     public virtual Inventory Clone () {
-        return new Inventory (this);
+        return new Inventory ( this );
     }
 }

@@ -11,7 +11,7 @@ public class InventoryManager {
         inventories = new Dictionary<string, List<Inventory>> ();
     }
 
-    public bool PlaceInventory (Tile tile, Inventory inv) {
+    public bool PlaceInventory ( Tile tile, Inventory inv ) {
 
         bool tileWasEmpty = tile.inventory == null; if ( tile.PlaceInventory ( inv ) == false ) {
             // The tile did not eccept the inventory for whatever reason, therefore stop!

@@ -12,15 +12,15 @@ public class MouseOverTileTypeText : MonoBehaviour {
 
     void Start () {
         myText = GetComponent<TMP_Text> ();
-        Debug.Log ($"{myText.text} : {myText.text}");
-        if (myText == null) {
-            Debug.LogError ("MouseOverTileTypeText: No 'Text' UI component on this object.");
+        Debug.Log ( $"{myText.text} : {myText.text}" );
+        if ( myText == null ) {
+            Debug.LogError ( "MouseOverTileTypeText: No 'Text' UI component on this object." );
             this.enabled = false;
             return;
         }
         mouseController = GameObject.FindObjectOfType<MouseController> ();
-        if (mouseController == null) {
-            Debug.LogError ("How do we not have an instance of mouse controller?");
+        if ( mouseController == null ) {
+            Debug.LogError ( "How do we not have an instance of mouse controller?" );
             return;
         }
     }

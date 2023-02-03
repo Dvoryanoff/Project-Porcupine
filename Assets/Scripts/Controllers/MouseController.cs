@@ -26,12 +26,12 @@ public class MouseController : MonoBehaviour {
     }
 
     public Tile GetMouseOverTile () {
-        return WorldController.Instance.world.GetTileAt (((int)currentFramePosition.x), (int)currentFramePosition.y);
+        return WorldController.Instance.GetTileAtWorldCoord ( currentFramePosition );
     }
 
     void Update () {
 
-        currentFramePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+        currentFramePosition = Camera.main.ScreenToWorldPoint ( Input.mousePosition );
         currentFramePosition.z = 0;
 
         //UpdateCursor();
@@ -46,59 +46,59 @@ public class MouseController : MonoBehaviour {
         //}
         #endregion
 
-        lastFramePosition = Camera.main.ScreenToWorldPoint (Input.mousePosition);
+        lastFramePosition = Camera.main.ScreenToWorldPoint ( Input.mousePosition );
         currentFramePosition.z = 0;
 
     }
 
     private void UpdateMainCamera () {
-        if (Input.GetMouseButton (1) || Input.GetMouseButton (2)) {
+        if ( Input.GetMouseButton ( 1 ) || Input.GetMouseButton ( 2 ) ) {
             Vector3 deltaFramePosition = lastFramePosition - Camera.main.ScreenToWorldPoint (Input.mousePosition); ;
-            Camera.main.transform.Translate (deltaFramePosition);
+            Camera.main.transform.Translate ( deltaFramePosition );
         }
 
-        Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis ("Mouse ScrollWheel");
-        Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize, minCameraZoom, maxCameraZoom);
+        Camera.main.orthographicSize -= Camera.main.orthographicSize * Input.GetAxis ( "Mouse ScrollWheel" );
+        Camera.main.orthographicSize = Mathf.Clamp ( Camera.main.orthographicSize, minCameraZoom, maxCameraZoom );
     }
 
     private void UpdateDragging () {
 
-        if (EventSystem.current.IsPointerOverGameObject ()) {
+        if ( EventSystem.current.IsPointerOverGameObject () ) {
             return;
         }
         // Start Drag
 
-        if (Input.GetMouseButtonDown (0)) {
+        if ( Input.GetMouseButtonDown ( 0 ) ) {
             dragStartPosition = currentFramePosition;
         }
 
-        int startX = Mathf.FloorToInt (dragStartPosition.x);
-        int endX = Mathf.FloorToInt (currentFramePosition.x);
-        int startY = Mathf.FloorToInt (dragStartPosition.y);
-        int endY = Mathf.FloorToInt (currentFramePosition.y);
+        int startX = Mathf.FloorToInt (dragStartPosition.x + 0.5f);
+        int endX = Mathf.FloorToInt (currentFramePosition.x + 0.5f);
+        int startY = Mathf.FloorToInt (dragStartPosition.y + 0.5f);
+        int endY = Mathf.FloorToInt (currentFramePosition.y + 0.5f);
 
-        if (endX < startX) {
+        if ( endX < startX ) {
             (startX, endX) = (endX, startX);
         }
 
-        if (endY < startY) {
+        if ( endY < startY ) {
             (startY, endY) = (endY, startY);
         }
 
-        while (dragPreviewGameobjects.Count > 0) {
+        while ( dragPreviewGameobjects.Count > 0 ) {
             GameObject previewGameObject = dragPreviewGameobjects[0];
-            dragPreviewGameobjects.RemoveAt (0);
-            SimplePool.Despawn (previewGameObject);
+            dragPreviewGameobjects.RemoveAt ( 0 );
+            SimplePool.Despawn ( previewGameObject );
 
         }
-        if (Input.GetMouseButton (0)) {
-            for (int x = startX; x <= endX; x++) {
-                for (int y = startY; y <= endY; y++) {
+        if ( Input.GetMouseButton ( 0 ) ) {
+            for ( int x = startX; x <= endX; x++ ) {
+                for ( int y = startY; y <= endY; y++ ) {
                     Tile t = WorldController.Instance.world.GetTileAt (x, y);
-                    if (t != null) {
+                    if ( t != null ) {
                         GameObject previewGameObject = SimplePool.Spawn (circleCursorPrefab, new Vector3 (x, y, 0), Quaternion.identity);
-                        previewGameObject.transform.SetParent (this.transform, true);
-                        dragPreviewGameobjects.Add (previewGameObject);
+                        previewGameObject.transform.SetParent ( this.transform, true );
+                        dragPreviewGameobjects.Add ( previewGameObject );
                     }
                 }
             }
@@ -106,17 +106,17 @@ public class MouseController : MonoBehaviour {
 
         // End Drag
 
-        if (Input.GetMouseButtonUp (0)) {
+        if ( Input.GetMouseButtonUp ( 0 ) ) {
 
             BuildModeController bmc = GameObject.FindObjectOfType<BuildModeController> ();
 
             // Loop through Tiles.
 
-            for (int x = startX; x <= endX; x++) {
-                for (int y = startY; y <= endY; y++) {
+            for ( int x = startX; x <= endX; x++ ) {
+                for ( int y = startY; y <= endY; y++ ) {
                     Tile t = WorldController.Instance.world.GetTileAt (x, y);
-                    if (t != null) {
-                        bmc.DoBuild (t);
+                    if ( t != null ) {
+                        bmc.DoBuild ( t );
                     }
                 }
             }

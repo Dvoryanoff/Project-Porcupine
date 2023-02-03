@@ -126,7 +126,7 @@ public class World : IXmlSerializable {
         furniturePrototypes.Add ( "Door", new Furniture ( "Door", 1, 1, 1, false, true ) );
 
         furniturePrototypes["Door"].SetParameter ( "openness", 0 );
-        furniturePrototypes["Door"].SetParameter ( "is_openning", 0 );
+        furniturePrototypes["Door"].SetParameter ( "is_opening", 0 );
         furniturePrototypes["Door"].RegisterUpdateAction ( FurnitureActions.Door_UpdateAction );
         furniturePrototypes["Door"].IsEnterable = FurnitureActions.Door_IsEnterable;
     }
@@ -362,7 +362,7 @@ public class World : IXmlSerializable {
         }
         inv = new Inventory ();
         inv.stackSize = 8;
-        t = GetTileAt ( Width / 2, Width / 2 + 2 );
+        t = GetTileAt ( Width / 2 + 1, Width / 2 + 2 );
         inventoryManager.PlaceInventory ( t, inv );
 
         if ( cbInventoryCreated != null ) {

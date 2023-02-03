@@ -17,12 +17,12 @@ public class WorldController : MonoBehaviour {
 
     private void OnEnable () {
 
-        if (Instance != null) {
-            Debug.Log ($"There should never be two worlds!!!");
+        if ( Instance != null ) {
+            Debug.Log ( $"There should never be two worlds!!!" );
         }
         Instance = this;
 
-        if (loadWorld) {
+        if ( loadWorld ) {
             loadWorld = false;
             CreateWorldFromSaveFile ();
         } else {
@@ -34,69 +34,69 @@ public class WorldController : MonoBehaviour {
 
         // TODO: Add pause/unpause, speed control, etc....
 
-        world.Update (Time.deltaTime);
+        world.Update ( Time.deltaTime );
     }
 
     // Called whenever tile's data get changed.
 
-    public Tile GetTileAtWorldCoord (Vector3 coord) {
-        int x = Mathf.FloorToInt (coord.x);
-        int y = Mathf.FloorToInt (coord.y);
+    public Tile GetTileAtWorldCoord ( Vector3 coord ) {
+        int x = Mathf.FloorToInt (coord.x + 0.5f);
+        int y = Mathf.FloorToInt (coord.y + 0.5f);
 
-        return world.GetTileAt (x, y);
+        return world.GetTileAt ( x, y );
     }
 
     public void NewWorld () {
-        Debug.Log ("NewWorld button was clicked!");
-        SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+        Debug.Log ( "NewWorld button was clicked!" );
+        SceneManager.LoadScene ( SceneManager.GetActiveScene ().name );
     }
 
     public void SaveWorld () {
-        Debug.Log ("SaveWorld button was clicked!");
+        Debug.Log ( "SaveWorld button was clicked!" );
         XmlSerializer serializer = new XmlSerializer (typeof (World));
         TextWriter writer = new StringWriter ();
 
-        serializer.Serialize (writer, world);
+        serializer.Serialize ( writer, world );
         writer.Close ();
 
-        Debug.Log (writer.ToString ());
+        Debug.Log ( writer.ToString () );
 
-        PlayerPrefs.SetString ("SaveGame00", writer.ToString ());
+        PlayerPrefs.SetString ( "SaveGame00", writer.ToString () );
     }
 
     public void LoadWorld () {
 
         // Reload the scene te resrt all data!
-        Debug.Log ("LoadWorld button was clicked!");
+        Debug.Log ( "LoadWorld button was clicked!" );
         loadWorld = true;
-        SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+        SceneManager.LoadScene ( SceneManager.GetActiveScene ().name );
     }
 
     private void CreateEmptyWorld () {
 
         // Create a world with empty tiles.
-        world = new World (100, 100);
+        world = new World ( 100, 100 );
 
         // Center the camera.
 
-        Camera.main.transform.position = new Vector3 (world.Width / 2, world.Height / 2, Camera.main.transform.position.z);
+        Camera.main.transform.position = new Vector3 ( world.Width / 2, world.Height / 2, Camera.main.transform.position.z );
 
     }
 
     private void CreateWorldFromSaveFile () {
-        Debug.Log ("CreateWorldFromSaveFile!");
+        Debug.Log ( "CreateWorldFromSaveFile!" );
 
         // Create a world from save file data.
 
         XmlSerializer serializer = new XmlSerializer (typeof (World));
         TextReader reader = new StringReader (PlayerPrefs.GetString ("SaveGame00"));
 
-        world = (World)serializer.Deserialize (reader);
+        world = (World) serializer.Deserialize ( reader );
         reader.Close ();
 
         // Center the camera.
 
-        Camera.main.transform.position = new Vector3 (world.Width / 2, world.Height / 2, Camera.main.transform.position.z);
+        Camera.main.transform.position = new Vector3 ( world.Width / 2, world.Height / 2, Camera.main.transform.position.z );
 
     }
 

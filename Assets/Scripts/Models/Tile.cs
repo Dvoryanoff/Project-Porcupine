@@ -22,8 +22,8 @@ public class Tile : IXmlSerializable {
             TileType oldType = _type;
             _type = value;
 
-            if (cbTileChanged != null && oldType != _type)
-                cbTileChanged (this);
+            if ( cbTileChanged != null && oldType != _type )
+                cbTileChanged ( this );
         }
     }
 
@@ -51,9 +51,9 @@ public class Tile : IXmlSerializable {
 
     public float movementCost {
         get {
-            if (Type == TileType.Empty)
+            if ( Type == TileType.Empty )
                 return 0; // 0 is Unwalkable.
-            if (furniture == null)
+            if ( furniture == null )
                 return baseTileMovementCost; // Normal cost.
 
             return baseTileMovementCost * furniture.movementCost;
@@ -61,28 +61,28 @@ public class Tile : IXmlSerializable {
         }
     }
 
-    public Tile (World world, int x, int y) {
+    public Tile ( World world, int x, int y ) {
         this.world = world;
         this.X = x;
         this.Y = y;
     }
 
-    public void RegisterTileTypeChangedCallback (Action<Tile> callback) {
+    public void RegisterTileTypeChangedCallback ( Action<Tile> callback ) {
         cbTileChanged += callback;
     }
 
-    public void UnregisterTileTypeChangedCallback (Action<Tile> callback) {
+    public void UnregisterTileTypeChangedCallback ( Action<Tile> callback ) {
         cbTileChanged -= callback;
     }
 
-    public bool PlaceFurniture (Furniture objInstance) {
-        if (objInstance == null) {
+    public bool PlaceFurniture ( Furniture objInstance ) {
+        if ( objInstance == null ) {
             furniture = null;
             return true;
         }
 
-        if (furniture != null) {
-            Debug.LogError ("Trying to assing an furniture object to a tile that already have one!");
+        if ( furniture != null ) {
+            Debug.LogError ( "Trying to assing an furniture object to a tile that already have one!" );
             return false;
         }
 
@@ -90,20 +90,20 @@ public class Tile : IXmlSerializable {
         return true;
     }
 
-    public bool PlaceInventory (Inventory inv) {
-        if (inv == null) {
+    public bool PlaceInventory ( Inventory inv ) {
+        if ( inv == null ) {
             inventory = null;
             return true;
         }
-        if (inventory != null) {
+        if ( inventory != null ) {
 
-            if (inventory.objectType != inv.objectType) {
-                Debug.Log ("Trying to assing inventory to a tile that already have one of a different type!");
+            if ( inventory.objectType != inv.objectType ) {
+                Debug.Log ( "Trying to assing inventory to a tile that already have one of a different type!" );
                 return false;
             }
 
             int numToMove = inv.stackSize;
-            if (inventory.stackSize + numToMove > inventory.maxStackSize) {
+            if ( inventory.stackSize + numToMove > inventory.maxStackSize ) {
                 numToMove = inventory.maxStackSize - inventory.stackSize;
             }
 
@@ -124,20 +124,20 @@ public class Tile : IXmlSerializable {
         return true;
     }
 
-    public bool IsNeighbour (Tile tile, bool diagOkay = false) {
+    public bool IsNeighbour ( Tile tile, bool diagOkay = false ) {
 
         // Check to see if we have a difference of exactly ONE between the two
         // tile coordinates.  Is so, then we are vertical or horizontal neighbours.
         return
-            Mathf.Abs (this.X - tile.X) + Mathf.Abs (this.Y - tile.Y) == 1 ||  // Check hori/vert adjacency
-            (diagOkay && (Mathf.Abs (this.X - tile.X) == 1 && Mathf.Abs (this.Y - tile.Y) == 1)); // Check diag adjacency
+            Mathf.Abs ( this.X - tile.X ) + Mathf.Abs ( this.Y - tile.Y ) == 1 ||  // Check hori/vert adjacency
+            ( diagOkay && ( Mathf.Abs ( this.X - tile.X ) == 1 && Mathf.Abs ( this.Y - tile.Y ) == 1 ) ); // Check diag adjacency
     }
 
-    public Tile[] GetNeighbours (bool diagOkay = false) {
+    public Tile[] GetNeighbours ( bool diagOkay = false ) {
 
         Tile[] neighbours;
 
-        if (diagOkay == false) {
+        if ( diagOkay == false ) {
             neighbours = new Tile[4]; // Tile order: N E S W 
         } else {
             neighbours = new Tile[8]; // Tile order: N E S W NE SE SW NW
@@ -146,23 +146,23 @@ public class Tile : IXmlSerializable {
 
         Tile n;
 
-        n = world.GetTileAt (X, Y + 1);// Can be null but thats okay.
+        n = world.GetTileAt ( X, Y + 1 );// Can be null but thats okay.
         neighbours[0] = n;
-        n = world.GetTileAt (X + 1, Y);// Can be null but thats okay.
+        n = world.GetTileAt ( X + 1, Y );// Can be null but thats okay.
         neighbours[1] = n;
-        n = world.GetTileAt (X, Y - 1);// Can be null but thats okay.
+        n = world.GetTileAt ( X, Y - 1 );// Can be null but thats okay.
         neighbours[2] = n;
-        n = world.GetTileAt (X - 1, Y);// Can be null but thats okay.
+        n = world.GetTileAt ( X - 1, Y );// Can be null but thats okay.
         neighbours[3] = n;
 
-        if (diagOkay) {
-            n = world.GetTileAt (X + 1, Y + 1);// Can be null but thats okay.
+        if ( diagOkay ) {
+            n = world.GetTileAt ( X + 1, Y + 1 );// Can be null but thats okay.
             neighbours[4] = n;
-            n = world.GetTileAt (X + 1, Y - 1);// Can be null but thats okay.
+            n = world.GetTileAt ( X + 1, Y - 1 );// Can be null but thats okay.
             neighbours[5] = n;
-            n = world.GetTileAt (X - 1, Y - 1);// Can be null but thats okay.
+            n = world.GetTileAt ( X - 1, Y - 1 );// Can be null but thats okay.
             neighbours[6] = n;
-            n = world.GetTileAt (X + 1, Y + 1);// Can be null but thats okay.
+            n = world.GetTileAt ( X + 1, Y + 1 );// Can be null but thats okay.
             neighbours[7] = n;
         }
 
@@ -174,42 +174,42 @@ public class Tile : IXmlSerializable {
         return null;
     }
 
-    public void ReadXml (XmlReader reader) {
+    public void ReadXml ( XmlReader reader ) {
 
-        Type = (TileType)int.Parse (reader.GetAttribute ("Type"));
+        Type = (TileType) int.Parse ( reader.GetAttribute ( "Type" ) );
 
     }
 
-    public void WriteXml (XmlWriter writer) {
-        writer.WriteAttributeString ("X", X.ToString ());
-        writer.WriteAttributeString ("Y", Y.ToString ());
-        writer.WriteAttributeString ("Type", ((int)Type).ToString ());
+    public void WriteXml ( XmlWriter writer ) {
+        writer.WriteAttributeString ( "X", X.ToString () );
+        writer.WriteAttributeString ( "Y", Y.ToString () );
+        writer.WriteAttributeString ( "Type", ( (int) Type ).ToString () );
     }
 
     public ENTERABILITY IsEnterable () {
 
         // This returns true if you can enter this tile right this moment.
-        if (movementCost == 0)
+        if ( movementCost == 0 )
             return ENTERABILITY.Never;
 
         // Check out furniture to see if it has a special block on enterability
-        if (furniture != null && furniture.IsEnterable != null) {
-            return furniture.IsEnterable (furniture);
+        if ( furniture != null && furniture.IsEnterable != null ) {
+            return furniture.IsEnterable ( furniture );
         }
 
         return ENTERABILITY.Yes;
     }
 
     public Tile North () {
-        return world.GetTileAt (X, Y + 1);
+        return world.GetTileAt ( X, Y + 1 );
     }
     public Tile South () {
-        return world.GetTileAt (X, Y - 1);
+        return world.GetTileAt ( X, Y - 1 );
     }
     public Tile West () {
-        return world.GetTileAt (X - 1, Y);
+        return world.GetTileAt ( X - 1, Y );
     }
     public Tile East () {
-        return world.GetTileAt (X + 1, Y + 1);
+        return world.GetTileAt ( X + 1, Y + 1 );
     }
 }

@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class InventorySpriteController : MonoBehaviour {
-
+    [SerializeField]
+    private GameObject inventoryUiPrefab;
     Dictionary<Inventory, GameObject> inventoryGameobjectMap;
     Dictionary<string, Sprite> inventorySprites;
 
@@ -57,6 +59,15 @@ public class InventorySpriteController : MonoBehaviour {
         SpriteRenderer sr = inv_go.AddComponent<SpriteRenderer> ();
         sr.sprite = inventorySprites[inv.objectType];
         sr.sortingLayerName = "Inventory";
+
+        if ( inv.maxStackSize > 1 ) {
+            // This is the stackable object, so let's add an InventoryUI component
+            // (which is text? shows the cyrrent stackSize.)
+            GameObject ui_go = Instantiate(inventoryUiPrefab);
+            ui_go.transform.SetParent ( inv_go.transform );
+            ui_go.transform.localPosition = Vector3.zero;
+            ui_go.GetComponentInChildren<TMP_Text> ().text = inv.stackSize.ToString ();
+        }
         inv_go.GetComponent<SpriteRenderer> ().sortingOrder = 1;
 
         // FIXME: Add onChange callbacks.
