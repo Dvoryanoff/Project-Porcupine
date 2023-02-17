@@ -42,6 +42,7 @@ public class JobSpriteController : MonoBehaviour {
             // By default, the door graphic is meant for walls to the east & west
             // Check to see if we actually have a wall north/south, and if so
             // then rotate this GO by 90 degrees
+            // 
             Tile northTile = job.tile.world.GetTileAt (job.tile.X, job.tile.Y + 1);
             Tile southTile = job.tile.world.GetTileAt (job.tile.X, job.tile.Y - 1);
 
