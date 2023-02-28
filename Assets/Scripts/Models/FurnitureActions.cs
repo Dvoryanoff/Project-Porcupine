@@ -31,5 +31,11 @@ public class FurnitureActions : MonoBehaviour {
         }
         return ENTERABILITY.Soon;
     }
+
+    public static void JobComplete_FurnitureBuilding ( Job theJob ) {
+
+        WorldController.Instance.world.PlaceFurniture ( theJob.jobObjectType, theJob.tile );
+        theJob.tile.pendingFurnitureJob = null;
+    }
 }
 

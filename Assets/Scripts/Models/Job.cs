@@ -7,9 +7,7 @@ public class Job {
     // things like placing furniture, moving stored inventory, 
     // working at a desk and maybe even fighting enemies.
 
-    public Tile tile {
-        get; protected set;
-    }
+    public Tile tile;
 
     private float jobTime;
 
@@ -22,13 +20,38 @@ public class Job {
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
 
-    public Queue<Job> jobQueue;
+    Dictionary<string, Inventory> inventoryRequirements;
 
-    public Job (Tile tile, string jobObjectType, Action<Job> cbJobComplete, float jobTime = 0.1f) {
+    public Job (Tile tile, string jobObjectType, Action<Job> cbJobComplete, float jobTime, Inventory[] inventoryRequirements) {
         this.tile = tile;
         this.jobObjectType = jobObjectType;
         this.cbJobComplete += cbJobComplete;
         this.jobTime = jobTime;
+
+        this.inventoryRequirements = new Dictionary<string, Inventory> ();
+        if (inventoryRequirements != null) {
+            foreach (Inventory inventory in inventoryRequirements) {
+                this.inventoryRequirements[inventory.objectType] = inventory.Clone ();
+            }
+        }
+    }
+
+    protected Job (Job other) {
+        this.tile = other.tile;
+        this.jobObjectType = other.jobObjectType;
+        this.cbJobComplete = other.cbJobComplete;
+        this.jobTime = other.jobTime;
+
+        this.inventoryRequirements = new Dictionary<string, Inventory> ();
+        if (inventoryRequirements != null) {
+            foreach (Inventory inventory in other.inventoryRequirements.Values) {
+                this.inventoryRequirements[inventory.objectType] = inventory.Clone ();
+            }
+        }
+    }
+
+    virtual public Job Clone () {
+        return new Job (this);
     }
 
     public void RegisterJobCompleteCallback (Action<Job> cb) {

@@ -42,12 +42,19 @@ public class BuildModeController : MonoBehaviour {
 
                 // Create a job for it to be build.
 
-                Job j = new (tile, furnitureType, (theJob) => {
+                Job j;
 
-                    WorldController.Instance.world.PlaceFurniture (furnitureType, theJob.tile);
-                    tile.pendingFurnitureJob = null;
+                if (WorldController.Instance.world.furnitureJobPrototypes.ContainsKey (furnitureType)) {
+
+                    // Make a clone of a jobProrotype
+                    j = WorldController.Instance.world.furnitureJobPrototypes[furnitureType].Clone ();
+
+                    //Assign a correct tile.
+                    j.tile = tile;
+                } else {
+                    Debug.LogError ($"There is no furniture job prototype for '{furnitureType}'.");
+                    j = new (tile, furnitureType, FurnitureActions.JobComplete_FurnitureBuilding, 0.1f, null);
                 }
-                );
 
                 // Job to queue
 
@@ -63,4 +70,5 @@ public class BuildModeController : MonoBehaviour {
             tile.Type = buildModelTile;
         }
     }
+
 }

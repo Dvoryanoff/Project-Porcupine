@@ -19,7 +19,8 @@ public class World : IXmlSerializable {
 
     public Path_TileGraph tileGraph;
 
-    Dictionary<string, Furniture> furniturePrototypes;
+    private Dictionary<string, Furniture> furniturePrototypes;
+    public Dictionary<string, Job> furnitureJobPrototypes;
 
     public int Width {
         get; protected set;
@@ -121,8 +122,11 @@ public class World : IXmlSerializable {
 
     protected void CreateFurniturePrototypes () {
         furniturePrototypes = new Dictionary<string, Furniture> ();
+        furnitureJobPrototypes = new Dictionary<string, Job> ();
 
         furniturePrototypes.Add ( "Wall", new Furniture ( "Wall", 0, 1, 1, true, true ) );
+        furnitureJobPrototypes.Add ( "Wall",
+            new Job ( null, "Wall", FurnitureActions.JobComplete_FurnitureBuilding, 1f, new Inventory[] { new Inventory ( "Steel Plate", 5, 0 ) } ) );
         furniturePrototypes.Add ( "Door", new Furniture ( "Door", 1, 1, 1, false, true ) );
 
         furniturePrototypes["Door"].SetParameter ( "openness", 0 );

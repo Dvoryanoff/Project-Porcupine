@@ -16,7 +16,7 @@ public class Furniture : IXmlSerializable {
     // These actions are called every update. They get passed the furniture
     // they belong to, plus a deltaTime.
     protected Action<Furniture, float> updateActions;
-    public Func<Furniture, ENTERABILITY> IsEnterable;
+    public Job constructionJobPrototype; public Func<Furniture, ENTERABILITY> IsEnterable;
 
     public void Update ( float deltaTime ) {
         if ( updateActions != null ) {
