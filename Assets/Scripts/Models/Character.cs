@@ -116,8 +116,26 @@ public class Character : IXmlSerializable {
                         return;
                     }
 
+                } else {
+                    // We are carrying something, but the job doesn't want it!
+                    // Dump the inventory at our feet
+                    // TODO: Actually, walk to the nearest empty tile and dump it there.
+                    if (currTile.world.inventoryManager.PlaceInventory (currTile, inventory) == false) {
+                        Debug.LogError ("Character tried to dump inventory into an invalid tile (maybe there's already something here.");
+
+                        // FIXME: For the sake of continuing on, we are still going to dump any
+                        // reference to the current inventory, but this means we are "leaking"
+                        // inventory.  This is permanently lost now.
+                        inventory = null;
+                    }
                 }
+            } else {
+
+                // At this point, the job still requires inventory, but we aren't carrying it!
+                // Walk towards a tile containing the required goods.
+
             }
+
             return; // We can't continue until all materials are satisfied.
         }
 

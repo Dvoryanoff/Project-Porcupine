@@ -44,7 +44,13 @@ public class InventoryManager {
         }
 
         job.inventoryRequirements[inv.objectType].stackSize += inv.stackSize;
-        inv.stackSize = 0;
+
+        if (job.inventoryRequirements[inv.objectType].maxStackSize > job.inventoryRequirements[inv.objectType].stackSize) {
+            inv.stackSize = job.inventoryRequirements[inv.objectType].stackSize - job.inventoryRequirements[inv.objectType].maxStackSize;
+            job.inventoryRequirements[inv.objectType].stackSize = job.inventoryRequirements[inv.objectType].maxStackSize;
+        } else {
+            inv.stackSize = 0;
+        }
 
         // At this point, "inv" might be an empty stack if it was merged to another stack.
         if (inv.stackSize == 0) {
